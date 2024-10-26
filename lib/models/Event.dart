@@ -4,7 +4,7 @@ class Event {
   final String title;
   final String description;
   final String localId;
-  final DateTime date;
+  final String date;
   final double price;
   final int totalTickets;
 
