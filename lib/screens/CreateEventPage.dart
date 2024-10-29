@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:tickets4devs/models/Event.dart';
 
 class CreateEventPage extends StatefulWidget {
@@ -16,7 +15,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
   final _localController = TextEditingController();
   final _priceController = TextEditingController();
   final _ticketsController = TextEditingController();
-  DateTime? _selectedDate;
+  String? _selectedDate;
 
   // Função para exibir um Date Picker
   Future<void> _pickDate(BuildContext context) async {
@@ -29,7 +28,9 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
     if (selectedDate != null) {
       setState(() {
-        _selectedDate = selectedDate;
+        _selectedDate = "${selectedDate.day.toString().padLeft(2, '0')}/"
+            "${selectedDate.month.toString().padLeft(2, '0')}/"
+            "${selectedDate.year}";
       });
     }
   }
@@ -42,7 +43,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
         title: _titleController.text,
         description: _descriptionController.text,
         localId: _localController.text,
-        date: _selectedDate!,
+        date: _selectedDate!, // Armazena a data como string
         price: double.parse(_priceController.text),
         totalTickets: int.parse(_ticketsController.text),
       );
@@ -117,9 +118,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   child: TextFormField(
                     decoration: InputDecoration(
                       labelText: 'Data',
-                      hintText: _selectedDate != null
-                          ? DateFormat('dd/MM/yyyy').format(_selectedDate!)
-                          : 'Selecione a data',
+                      hintText: _selectedDate ?? 'Selecione a data',
                     ),
                     validator: (_) {
                       if (_selectedDate == null) {
