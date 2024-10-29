@@ -111,11 +111,15 @@ class _CreateEventPageState extends State<CreateEventPage> {
               TextFormField(
                 controller: _titleController,
                 style: const TextStyle(
-                    color: Color.fromRGBO(162, 194, 73, 1)), // Cor do texto
-                decoration: InputDecoration(
+                  color: Color.fromRGBO(162, 194, 73, 1),
+                  fontSize: 16, // Tamanho da fonte do texto
+                ),
+                decoration: const InputDecoration(
                   labelText: 'Título',
-                  labelStyle: const TextStyle(
-                      color: Color.fromRGBO(162, 194, 73, 1)), // Cor do label
+                  labelStyle: TextStyle(
+                    color: Color.fromRGBO(162, 194, 73, 1),
+                    fontSize: 16, // Tamanho da fonte do label
+                  ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -129,11 +133,15 @@ class _CreateEventPageState extends State<CreateEventPage> {
               TextFormField(
                 controller: _descriptionController,
                 style: const TextStyle(
-                    color: Color.fromRGBO(162, 194, 73, 1)), // Cor do texto
-                decoration: InputDecoration(
+                  color: Color.fromRGBO(162, 194, 73, 1),
+                  fontSize: 16,
+                ),
+                decoration: const InputDecoration(
                   labelText: 'Descrição',
-                  labelStyle: const TextStyle(
-                      color: Color.fromRGBO(162, 194, 73, 1)), // Cor do label
+                  labelStyle: TextStyle(
+                    color: Color.fromRGBO(162, 194, 73, 1),
+                    fontSize: 16,
+                  ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -147,11 +155,15 @@ class _CreateEventPageState extends State<CreateEventPage> {
               TextFormField(
                 controller: _localController,
                 style: const TextStyle(
-                    color: Color.fromRGBO(162, 194, 73, 1)), // Cor do texto
-                decoration: InputDecoration(
+                  color: Color.fromRGBO(162, 194, 73, 1),
+                  fontSize: 16,
+                ),
+                decoration: const InputDecoration(
                   labelText: 'Local',
-                  labelStyle: const TextStyle(
-                      color: Color.fromRGBO(162, 194, 73, 1)), // Cor do label
+                  labelStyle: TextStyle(
+                    color: Color.fromRGBO(162, 194, 73, 1),
+                    fontSize: 16,
+                  ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -165,45 +177,29 @@ class _CreateEventPageState extends State<CreateEventPage> {
               GestureDetector(
                 onTap: () => _pickDate(context),
                 child: AbsorbPointer(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Label da Data
-                      Text(
-                        'Data',
-                        style: const TextStyle(
-                            color: Color.fromRGBO(
-                                162, 194, 73, 1)), // Cor do label
+                  child: TextFormField(
+                    style: const TextStyle(
+                      color: Color.fromRGBO(162, 194, 73, 1),
+                      fontSize: 16,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Data',
+                      labelStyle: const TextStyle(
+                        color: Color.fromRGBO(162, 194, 73, 1),
+                        fontSize: 16,
                       ),
-                      // Campo de entrada da data
-                      TextFormField(
-                        style: const TextStyle(
-                            color: Color.fromRGBO(
-                                162, 194, 73, 1)), // Cor do texto
-                        decoration: InputDecoration(
-                          hintText: _selectedDate ?? 'Selecione a data',
-                          hintStyle: const TextStyle(
-                              color: Color.fromRGBO(
-                                  162, 194, 73, 1)), // Cor do hint
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color.fromRGBO(162, 194, 73,
-                                    1)), // Cor da borda quando habilitado
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color.fromRGBO(162, 194, 73,
-                                    1)), // Cor da borda quando focado
-                          ),
-                        ),
-                        validator: (_) {
-                          if (_selectedDate == null) {
-                            return 'Por favor, selecione uma data';
-                          }
-                          return null;
-                        },
+                      hintText: _selectedDate ?? 'Selecione a data',
+                      hintStyle: const TextStyle(
+                        color: Color.fromRGBO(162, 194, 73, 1),
+                        fontSize: 16,
                       ),
-                    ],
+                    ),
+                    validator: (_) {
+                      if (_selectedDate == null) {
+                        return 'Por favor, selecione uma data';
+                      }
+                      return null;
+                    },
                   ),
                 ),
               ),
@@ -212,11 +208,15 @@ class _CreateEventPageState extends State<CreateEventPage> {
               TextFormField(
                 controller: _priceController,
                 style: const TextStyle(
-                    color: Color.fromRGBO(162, 194, 73, 1)), // Cor do texto
-                decoration: InputDecoration(
+                  color: Color.fromRGBO(162, 194, 73, 1),
+                  fontSize: 16,
+                ),
+                decoration: const InputDecoration(
                   labelText: 'Preço',
-                  labelStyle: const TextStyle(
-                      color: Color.fromRGBO(162, 194, 73, 1)), // Cor do label
+                  labelStyle: TextStyle(
+                    color: Color.fromRGBO(162, 194, 73, 1),
+                    fontSize: 16,
+                  ),
                 ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
@@ -234,11 +234,15 @@ class _CreateEventPageState extends State<CreateEventPage> {
               TextFormField(
                 controller: _ticketsController,
                 style: const TextStyle(
-                    color: Color.fromRGBO(162, 194, 73, 1)), // Cor do texto
-                decoration: InputDecoration(
+                  color: Color.fromRGBO(162, 194, 73, 1),
+                  fontSize: 16,
+                ),
+                decoration: const InputDecoration(
                   labelText: 'Total de Ingressos',
-                  labelStyle: const TextStyle(
-                      color: Color.fromRGBO(162, 194, 73, 1)), // Cor do label
+                  labelStyle: TextStyle(
+                    color: Color.fromRGBO(162, 194, 73, 1),
+                    fontSize: 16,
+                  ),
                 ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
@@ -255,9 +259,20 @@ class _CreateEventPageState extends State<CreateEventPage> {
               const SizedBox(height: 20),
 
               // Botão para salvar o evento
-              ElevatedButton(
-                onPressed: _saveEvent,
-                child: Text('Criar Evento'),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  ),
+                  onPressed: () {},
+                  child: const Text(
+                    'Criar Evento',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
               ),
             ],
           ),

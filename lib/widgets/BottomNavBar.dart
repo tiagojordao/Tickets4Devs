@@ -44,7 +44,7 @@ class BottomNavBar extends StatelessWidget {
                     '/'), /*Temos que alterar para a tela de perfil quando houver*/
               ),
               IconButton(
-                icon: Icon(Icons.logout),
+                icon: Icon(Icons.add),
                 color: Theme.of(context).scaffoldBackgroundColor,
                 onPressed: () => context.go('/create_event'),
               ),
