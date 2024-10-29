@@ -82,7 +82,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
               child: AppBar(
                 title: const Center(
                   child: Text(
-                    'Eventos',
+                    'Crie seu Evento',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -162,7 +162,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
               ),
 
               // Campo para selecionar a data do evento
-              // Campo para selecionar a data do evento
               GestureDetector(
                 onTap: () => _pickDate(context),
                 child: AbsorbPointer(
@@ -204,14 +203,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           return null;
                         },
                       ),
-                      // Exibindo a data selecionada na cor desejada
-                      if (_selectedDate != null)
-                        Text(
-                          _selectedDate!,
-                          style: const TextStyle(
-                              color: Color.fromRGBO(
-                                  162, 194, 73, 1)), // Cor da data selecionada
-                        ),
                     ],
                   ),
                 ),
