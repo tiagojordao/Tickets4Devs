@@ -173,33 +173,38 @@ class _CreateEventPageState extends State<CreateEventPage> {
                 },
               ),
 
-              // Campo para selecionar a data do evento
-              GestureDetector(
-                onTap: () => _pickDate(context),
-                child: AbsorbPointer(
-                  child: TextFormField(
-                    style: const TextStyle(
-                      color: Color.fromRGBO(162, 194, 73, 1),
-                      fontSize: 16,
-                    ),
-                    decoration: InputDecoration(
-                      labelText: 'Data',
-                      labelStyle: const TextStyle(
-                        color: Color.fromRGBO(162, 194, 73, 1),
-                        fontSize: 16,
+               // Campo de entrada da data
+                      TextFormField(
+                        style: const TextStyle(
+                            color: Color.fromRGBO(
+                                162, 194, 73, 1)), // Cor do texto
+                        decoration: InputDecoration(
+                          hintText: _selectedDate ?? 'Selecione a data',
+                          hintStyle: const TextStyle(
+                              color: Color.fromRGBO(
+                                  162, 194, 73, 1)),
+                      fontSize: 16, // Cor do hint
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Color.fromRGBO(162, 194, 73,
+                                    1)),
+                      fontSize: 16, // Cor da borda quando habilitado
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Color.fromRGBO(162, 194, 73,
+                                    1)),
+                      fontSize: 16, // Cor da borda quando focado
+                          ),
+                        ),
+                        validator: (_) {
+                          if (_selectedDate == null) {
+                            return 'Por favor, selecione uma data';
+                          }
+                          return null;
+                        },
                       ),
-                      hintText: _selectedDate ?? 'Selecione a data',
-                      hintStyle: const TextStyle(
-                        color: Color.fromRGBO(162, 194, 73, 1),
-                        fontSize: 16,
-                      ),
-                    ),
-                    validator: (_) {
-                      if (_selectedDate == null) {
-                        return 'Por favor, selecione uma data';
-                      }
-                      return null;
-                    },
+                    ],
                   ),
                 ),
               ),
@@ -267,7 +272,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     backgroundColor: Theme.of(context).primaryColor,
                     foregroundColor: Theme.of(context).scaffoldBackgroundColor,
                   ),
-                  onPressed: () {},
+                  onPressed: () {_saveEvent},
                   child: const Text(
                     'Criar Evento',
                     style: TextStyle(fontSize: 16),
@@ -277,8 +282,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: Column(
+        bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           const Divider(
