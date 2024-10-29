@@ -68,8 +68,38 @@ class _CreateEventPageState extends State<CreateEventPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Criar Novo Evento'),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60.0),
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.circular(30.0),
+                ),
+              ),
+              child: AppBar(
+                title: const Center(
+                  child: Text(
+                    'Eventos',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+              ),
+            ),
+            const Divider(
+              height: 1,
+              thickness: 1,
+              color: Colors.black,
+            ),
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -132,28 +162,57 @@ class _CreateEventPageState extends State<CreateEventPage> {
               ),
 
               // Campo para selecionar a data do evento
+              // Campo para selecionar a data do evento
               GestureDetector(
                 onTap: () => _pickDate(context),
                 child: AbsorbPointer(
-                  child: TextFormField(
-                    style: const TextStyle(
-                        color: Color.fromRGBO(162, 194, 73, 1)), // Cor do texto
-                    decoration: InputDecoration(
-                      labelText: 'Data',
-                      labelStyle: const TextStyle(
-                          color:
-                              Color.fromRGBO(162, 194, 73, 1)), // Cor do label
-                      hintText: _selectedDate ?? 'Selecione a data',
-                      hintStyle: const TextStyle(
-                          color:
-                              Color.fromRGBO(162, 194, 73, 1)), // Cor do hint
-                    ),
-                    validator: (_) {
-                      if (_selectedDate == null) {
-                        return 'Por favor, selecione uma data';
-                      }
-                      return null;
-                    },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Label da Data
+                      Text(
+                        'Data',
+                        style: const TextStyle(
+                            color: Color.fromRGBO(
+                                162, 194, 73, 1)), // Cor do label
+                      ),
+                      // Campo de entrada da data
+                      TextFormField(
+                        style: const TextStyle(
+                            color: Color.fromRGBO(
+                                162, 194, 73, 1)), // Cor do texto
+                        decoration: InputDecoration(
+                          hintText: _selectedDate ?? 'Selecione a data',
+                          hintStyle: const TextStyle(
+                              color: Color.fromRGBO(
+                                  162, 194, 73, 1)), // Cor do hint
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Color.fromRGBO(162, 194, 73,
+                                    1)), // Cor da borda quando habilitado
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Color.fromRGBO(162, 194, 73,
+                                    1)), // Cor da borda quando focado
+                          ),
+                        ),
+                        validator: (_) {
+                          if (_selectedDate == null) {
+                            return 'Por favor, selecione uma data';
+                          }
+                          return null;
+                        },
+                      ),
+                      // Exibindo a data selecionada na cor desejada
+                      if (_selectedDate != null)
+                        Text(
+                          _selectedDate!,
+                          style: const TextStyle(
+                              color: Color.fromRGBO(
+                                  162, 194, 73, 1)), // Cor da data selecionada
+                        ),
+                    ],
                   ),
                 ),
               ),
