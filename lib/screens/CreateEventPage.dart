@@ -173,18 +173,21 @@ class _CreateEventPageState extends State<CreateEventPage> {
                 },
               ),
 
-               // Campo de entrada da data
-                      TextFormField(
+               // Campo para selecionar a data do evento
+              GestureDetector(
+                onTap: () => _pickDate(context),
+                child: AbsorbPointer(
+                  child: TextFormField(
                         style: const TextStyle(
                             color: Color.fromRGBO(
-                                162, 194, 73, 1)), // Cor do texto
-                        decoration: InputDecoration(
-                          hintText: _selectedDate ?? 'Selecione a data',
-                          hintStyle: const TextStyle(
-                              color: Color.fromRGBO(
+                                162, 194, 73, 1), ), // Cor do texto
+                            decoration: InputDecoration(
+                            hintText: _selectedDate ?? 'Selecione a data',
+                            hintStyle: const TextStyle(
+                            color: Color.fromRGBO(
                                   162, 194, 73, 1)),
-                      fontSize: 16, // Cor do hint
-                          enabledBorder: UnderlineInputBorder(
+                            fontSize: 16, // Cor do hint
+                            enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
                                 color: Color.fromRGBO(162, 194, 73,
                                     1)),
