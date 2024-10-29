@@ -8,6 +8,7 @@ class CreateEventPage extends StatefulWidget {
 }
 
 class _CreateEventPageState extends State<CreateEventPage> {
+  final int _selectedIndex = 0;
   final _formKey = GlobalKey<FormState>();
 
   // Controladores para os campos do formulário
@@ -79,8 +80,13 @@ class _CreateEventPageState extends State<CreateEventPage> {
               // Campo para o título do evento
               TextFormField(
                 controller: _titleController,
-                decoration: InputDecoration(labelText: 'Título'),
-                style: const TextStyle(color: Color.fromRGBO(162, 194, 73, 1)),
+                style: const TextStyle(
+                    color: Color.fromRGBO(162, 194, 73, 1)), // Cor do texto
+                decoration: InputDecoration(
+                  labelText: 'Título',
+                  labelStyle: const TextStyle(
+                      color: Color.fromRGBO(162, 194, 73, 1)), // Cor do label
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, insira o título do evento';
@@ -92,7 +98,13 @@ class _CreateEventPageState extends State<CreateEventPage> {
               // Campo para a descrição do evento
               TextFormField(
                 controller: _descriptionController,
-                decoration: InputDecoration(labelText: 'Descrição'),
+                style: const TextStyle(
+                    color: Color.fromRGBO(162, 194, 73, 1)), // Cor do texto
+                decoration: InputDecoration(
+                  labelText: 'Descrição',
+                  labelStyle: const TextStyle(
+                      color: Color.fromRGBO(162, 194, 73, 1)), // Cor do label
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, insira uma descrição';
@@ -104,7 +116,13 @@ class _CreateEventPageState extends State<CreateEventPage> {
               // Campo para o local do evento
               TextFormField(
                 controller: _localController,
-                decoration: InputDecoration(labelText: 'Local'),
+                style: const TextStyle(
+                    color: Color.fromRGBO(162, 194, 73, 1)), // Cor do texto
+                decoration: InputDecoration(
+                  labelText: 'Local',
+                  labelStyle: const TextStyle(
+                      color: Color.fromRGBO(162, 194, 73, 1)), // Cor do label
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, insira o local do evento';
@@ -118,9 +136,17 @@ class _CreateEventPageState extends State<CreateEventPage> {
                 onTap: () => _pickDate(context),
                 child: AbsorbPointer(
                   child: TextFormField(
+                    style: const TextStyle(
+                        color: Color.fromRGBO(162, 194, 73, 1)), // Cor do texto
                     decoration: InputDecoration(
                       labelText: 'Data',
+                      labelStyle: const TextStyle(
+                          color:
+                              Color.fromRGBO(162, 194, 73, 1)), // Cor do label
                       hintText: _selectedDate ?? 'Selecione a data',
+                      hintStyle: const TextStyle(
+                          color:
+                              Color.fromRGBO(162, 194, 73, 1)), // Cor do hint
                     ),
                     validator: (_) {
                       if (_selectedDate == null) {
@@ -135,7 +161,13 @@ class _CreateEventPageState extends State<CreateEventPage> {
               // Campo para o preço do evento
               TextFormField(
                 controller: _priceController,
-                decoration: InputDecoration(labelText: 'Preço'),
+                style: const TextStyle(
+                    color: Color.fromRGBO(162, 194, 73, 1)), // Cor do texto
+                decoration: InputDecoration(
+                  labelText: 'Preço',
+                  labelStyle: const TextStyle(
+                      color: Color.fromRGBO(162, 194, 73, 1)), // Cor do label
+                ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -151,7 +183,13 @@ class _CreateEventPageState extends State<CreateEventPage> {
               // Campo para a quantidade total de ingressos
               TextFormField(
                 controller: _ticketsController,
-                decoration: InputDecoration(labelText: 'Total de Ingressos'),
+                style: const TextStyle(
+                    color: Color.fromRGBO(162, 194, 73, 1)), // Cor do texto
+                decoration: InputDecoration(
+                  labelText: 'Total de Ingressos',
+                  labelStyle: const TextStyle(
+                      color: Color.fromRGBO(162, 194, 73, 1)), // Cor do label
+                ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
