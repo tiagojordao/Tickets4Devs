@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tickets4devs/models/Event.dart';
+import 'package:tickets4devs/widgets/BottomNavBar.dart';
 
 class CreateEventPage extends StatefulWidget {
   @override
@@ -79,6 +80,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
               TextFormField(
                 controller: _titleController,
                 decoration: InputDecoration(labelText: 'Título'),
+                style: const TextStyle(color: Color.fromRGBO(162, 194, 73, 1)),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, insira o título do evento';
@@ -172,6 +174,19 @@ class _CreateEventPageState extends State<CreateEventPage> {
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Divider(
+            height: 4,
+            thickness: 2,
+            color: Colors.black,
+          ),
+          BottomNavBar(
+            selectedIndex: _selectedIndex,
+          ),
+        ],
       ),
     );
   }
