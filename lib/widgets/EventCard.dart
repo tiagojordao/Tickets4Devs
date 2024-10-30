@@ -28,7 +28,16 @@ class EventCard extends StatelessWidget {
     void _openEventDetail() {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => EventDatail(),
+          builder: (context) => EventDetail(
+            date: date,
+            price: price,
+            title: title,
+            localId: localId,
+            isPurchased: isPurchased,
+            togglePurchase: (event) {
+              togglePurchase(event);
+            },
+          ),
         ),
       );
     }
