@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, unused_import, no_leading_underscores_for_local_identifiers, prefer_const_constructors
+// ignore_for_file: file_names, unused_import, no_leading_underscores_for_local_identifiers, prefer_const_constructors, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:tickets4devs/models/Event.dart';
@@ -10,10 +10,10 @@ class EventDetail extends StatefulWidget {
   final double price;
   final String title;
   final String localId;
-  final bool isPurchased;
+  bool isPurchased;
   final Function(String) togglePurchase;
   
-  const EventDetail({
+  EventDetail({
       super.key,
       required this.date,
       required this.price,
@@ -30,6 +30,12 @@ class EventDetail extends StatefulWidget {
 class _EventDetailState extends State<EventDetail> {
 
   final int _selectedIndex = 0;
+
+  void _togglePurchase() {
+    setState(() {
+      widget.isPurchased = !widget.isPurchased;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +109,7 @@ class _EventDetailState extends State<EventDetail> {
                   foregroundColor: Theme.of(context).scaffoldBackgroundColor,
                 ),
                 onPressed: () {
+                  _togglePurchase();
                   widget.togglePurchase(widget.title);
                 },
                 icon: Icon(widget.isPurchased
