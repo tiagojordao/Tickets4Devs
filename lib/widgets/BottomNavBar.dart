@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,7 +26,7 @@ class BottomNavBar extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.home),
                 color: Theme.of(context).scaffoldBackgroundColor,
-                onPressed: () => context.go('/'),
+                onPressed: () {},
               ),
               IconButton(
                 icon: Icon(Icons.search),
@@ -34,14 +36,12 @@ class BottomNavBar extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.shopping_cart),
                 color: Theme.of(context).scaffoldBackgroundColor,
-                onPressed: () => context.go(
-                    '/'), /*Temos que alterar para a tela de carteira quando houver*/
+                onPressed: () {} /*Temos que alterar para a tela de carteira quando houver*/
               ),
               IconButton(
                 icon: Icon(Icons.person),
                 color: Theme.of(context).scaffoldBackgroundColor,
-                onPressed: () => context.go(
-                    '/'), /*Temos que alterar para a tela de perfil quando houver*/
+                onPressed: () {} /*Temos que alterar para a tela de perfil quando houver*/
               ),
               IconButton(
                 icon: Icon(Icons.add),
@@ -51,7 +51,7 @@ class BottomNavBar extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.logout),
                 color: Theme.of(context).scaffoldBackgroundColor,
-                onPressed: () => context.go('/login'),
+                onPressed: () => context.go('/'),
               ),
             ],
           ),
