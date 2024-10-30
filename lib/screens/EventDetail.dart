@@ -122,8 +122,8 @@ class _EventDetailState extends State<EventDetail> {
         ),
       ),
       bottomNavigationBar: BottomNavBar(
-            selectedIndex: _selectedIndex,
-          ),
+        selectedIndex: _selectedIndex,
+      ),
     );
   }
 }
