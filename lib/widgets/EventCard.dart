@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-class EventCard extends StatelessWidget {
+class EventCard extends StatefulWidget {
 
   final String date;
   final double price;
@@ -22,6 +22,20 @@ class EventCard extends StatelessWidget {
       required this.isPurchased,
       required this.togglePurchase,
     });
+
+  @override
+  State<EventCard> createState() => _EventCardState();
+}
+
+class _EventCardState extends State<EventCard> {
+
+  bool _isPurchased = false;
+
+  void _togglePurchase() {
+    setState(() {
+      _isPurchased = !_isPurchased;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +59,14 @@ class EventCard extends StatelessWidget {
                       MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      date,
+                      widget.date,
                       style: const TextStyle(
                         fontSize: 16.0,
                         color: Color.fromRGBO(162, 194, 73, 1),
                       ),
                     ),
                     Text(
-                      'R\$${price.toStringAsFixed(2)}',
+                      'R\$${widget.price.toStringAsFixed(2)}',
                       style:
                           Theme.of(context).textTheme.bodySmall,
                     ),
@@ -60,7 +74,7 @@ class EventCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8.0),
                 Text(
-                  title,
+                  widget.title,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 const SizedBox(height: 8.0),
@@ -85,9 +99,9 @@ class EventCard extends StatelessWidget {
                       const SizedBox(width: 4.0),
                       Flexible(
                         child: Tooltip(
-                          message: localId,
+                          message: widget.localId,
                           child: Text(
-                            localId,
+                            widget.localId,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall,
@@ -110,7 +124,7 @@ class EventCard extends StatelessWidget {
                 ),
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    togglePurchase(eventId);
+                    _togglePurchase();
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
@@ -125,8 +139,8 @@ class EventCard extends StatelessWidget {
                     elevation: 0,
                   ),
                   label:
-                      Text(isPurchased ? 'Remover' : 'Comprar'),
-                  icon: Icon(isPurchased
+                      Text(_isPurchased ? 'Remover' : 'Comprar'),
+                  icon: Icon(_isPurchased
                       ? Icons.remove_shopping_cart
                       : Icons.add_shopping_cart),
                 ),
