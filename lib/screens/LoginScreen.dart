@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tickets4devs/routes/Routes.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -62,7 +64,9 @@ class LoginScreen extends StatelessWidget {
                     backgroundColor: Theme.of(context).primaryColor,
                     foregroundColor: Theme.of(context).scaffoldBackgroundColor,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    context.go('/search');
+                  },
                   child: Text(
                     'Login',
                     style: TextStyle(fontSize: 18),
