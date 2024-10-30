@@ -50,7 +50,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
         totalTickets: int.parse(_ticketsController.text),
       );
 
-      // Aqui você pode fazer algo com o evento, como enviá-lo a um backend
+      // adicionar logica para salvamento
 
       // Exemplo de feedback visual
       ScaffoldMessenger.of(context).showSnackBar(
@@ -110,14 +110,14 @@ class _CreateEventPageState extends State<CreateEventPage> {
               // Campo para o título do evento
               TextFormField(
                 controller: _titleController,
-                style: const TextStyle(
-                  color: Color.fromRGBO(162, 194, 73, 1),
+                style: TextStyle(
+                  color: Theme.of(context).primaryColorLight,
                   fontSize: 16, // Tamanho da fonte do texto
                 ),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Título',
                   labelStyle: TextStyle(
-                    color: Color.fromRGBO(162, 194, 73, 1),
+                    color: Theme.of(context).primaryColorLight,
                     fontSize: 16, // Tamanho da fonte do label
                   ),
                 ),
@@ -132,14 +132,14 @@ class _CreateEventPageState extends State<CreateEventPage> {
               // Campo para a descrição do evento
               TextFormField(
                 controller: _descriptionController,
-                style: const TextStyle(
-                  color: Color.fromRGBO(162, 194, 73, 1),
+                style: TextStyle(
+                  color: Theme.of(context).primaryColorLight,
                   fontSize: 16,
                 ),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Descrição',
                   labelStyle: TextStyle(
-                    color: Color.fromRGBO(162, 194, 73, 1),
+                    color: Theme.of(context).primaryColorLight,
                     fontSize: 16,
                   ),
                 ),
@@ -154,14 +154,14 @@ class _CreateEventPageState extends State<CreateEventPage> {
               // Campo para o local do evento
               TextFormField(
                 controller: _localController,
-                style: const TextStyle(
-                  color: Color.fromRGBO(162, 194, 73, 1),
+                style: TextStyle(
+                  color: Theme.of(context).primaryColorLight,
                   fontSize: 16,
                 ),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Local',
                   labelStyle: TextStyle(
-                    color: Color.fromRGBO(162, 194, 73, 1),
+                    color: Theme.of(context).primaryColorLight,
                     fontSize: 16,
                   ),
                 ),
@@ -178,23 +178,23 @@ class _CreateEventPageState extends State<CreateEventPage> {
                 onTap: () => _pickDate(context),
                 child: AbsorbPointer(
                   child: TextFormField(
-                    style: const TextStyle(
-                      color: Color.fromRGBO(162, 194, 73, 1),
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColorLight,
                     ),
                     decoration: InputDecoration(
                       hintText: _selectedDate ?? 'Selecione a data',
-                      hintStyle: const TextStyle(
-                        color: Color.fromRGBO(162, 194, 73, 1),
+                      hintStyle: TextStyle(
+                        color: Theme.of(context).primaryColorLight,
                         fontSize: 16,
                       ),
-                      enabledBorder: const UnderlineInputBorder(
+                      enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: Color.fromRGBO(162, 194, 73, 1),
+                          color: Theme.of(context).primaryColorLight,
                         ),
                       ),
-                      focusedBorder: const UnderlineInputBorder(
+                      focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: Color.fromRGBO(162, 194, 73, 1),
+                          color: Theme.of(context).primaryColorLight,
                         ),
                       ),
                     ),
@@ -211,14 +211,14 @@ class _CreateEventPageState extends State<CreateEventPage> {
               // Campo para o preço do evento
               TextFormField(
                 controller: _priceController,
-                style: const TextStyle(
-                  color: Color.fromRGBO(162, 194, 73, 1),
+                style: TextStyle(
+                  color: Theme.of(context).primaryColorLight,
                   fontSize: 16,
                 ),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Preço',
                   labelStyle: TextStyle(
-                    color: Color.fromRGBO(162, 194, 73, 1),
+                    color: Theme.of(context).primaryColorLight,
                     fontSize: 16,
                   ),
                 ),
@@ -237,14 +237,14 @@ class _CreateEventPageState extends State<CreateEventPage> {
               // Campo para a quantidade total de ingressos
               TextFormField(
                 controller: _ticketsController,
-                style: const TextStyle(
-                  color: Color.fromRGBO(162, 194, 73, 1),
+                style: TextStyle(
+                  color: Theme.of(context).primaryColorLight,
                   fontSize: 16,
                 ),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Total de Ingressos',
                   labelStyle: TextStyle(
-                    color: Color.fromRGBO(162, 194, 73, 1),
+                    color: Theme.of(context).primaryColorLight,
                     fontSize: 16,
                   ),
                 ),

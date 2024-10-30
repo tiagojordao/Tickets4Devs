@@ -26,7 +26,7 @@ class BottomNavBar extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.home),
                 color: Theme.of(context).scaffoldBackgroundColor,
-                onPressed: () => context.go('/'),
+                onPressed: () {},
               ),
               IconButton(
                 icon: Icon(Icons.search),
