@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class UserProfileScreen extends StatelessWidget {
   final String name;
@@ -25,7 +28,7 @@ class UserProfileScreen extends StatelessWidget {
                 ),
               ),
               child: AppBar(
-                title: const Center(
+                title: Center(
                   child: Text(
                     'Perfil do Usuário',
                     style: TextStyle(
@@ -88,7 +91,7 @@ class UserProfileScreen extends StatelessWidget {
                   foregroundColor: Theme.of(context).scaffoldBackgroundColor,
                 ),
                 onPressed: () {
-                  // Implementar lógica futura de edição ou logout aqui
+                  context.go('/');
                 },
                 icon: Icon(Icons.logout),
                 label: Text("Sair da Conta"),
