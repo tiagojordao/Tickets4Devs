@@ -2,8 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tickets4devs/widgets/BottomNavBar.dart';
 
 class UserProfileScreen extends StatelessWidget {
+
+  final int _selectedIndex = 0;
+
   final String name;
   final String email;
 
@@ -13,7 +17,6 @@ class UserProfileScreen extends StatelessWidget {
     required this.email,
   }) : super(key: key);
 
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
@@ -64,22 +67,34 @@ class UserProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            Text(
-              "Nome",
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            Text(
-              name,
-              style: Theme.of(context).textTheme.bodyLarge,
+            Row(
+              children: [
+                Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+                Text(
+                  ' $name',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
-            Text(
-              "Email",
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            Text(
-              email,
-              style: Theme.of(context).textTheme.bodyLarge,
+            Row(
+              children: [
+                Icon(
+                  Icons.email,
+                  color: Colors.white,
+                ),
+                Text(
+                  ' $email',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
             const Spacer(),
             SizedBox(
@@ -99,6 +114,9 @@ class UserProfileScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavBar(
+        selectedIndex: _selectedIndex,
       ),
     );
   }
