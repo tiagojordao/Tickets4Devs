@@ -1,14 +1,12 @@
 // ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 
-class EventCard extends StatefulWidget {
+class EventCard extends StatelessWidget {
 
   final String date;
   final double price;
   final String title;
   final String localId;
-  final String eventId;
   final bool isPurchased;
   final Function(String) togglePurchase;
   
@@ -18,24 +16,9 @@ class EventCard extends StatefulWidget {
       required this.price,
       required this.title,
       required this.localId,
-      required this.eventId,
       required this.isPurchased,
       required this.togglePurchase,
     });
-
-  @override
-  State<EventCard> createState() => _EventCardState();
-}
-
-class _EventCardState extends State<EventCard> {
-
-  bool _isPurchased = false;
-
-  void _togglePurchase() {
-    setState(() {
-      _isPurchased = !_isPurchased;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,14 +42,14 @@ class _EventCardState extends State<EventCard> {
                       MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      widget.date,
+                      date,
                       style: const TextStyle(
                         fontSize: 16.0,
                         color: Color.fromRGBO(162, 194, 73, 1),
                       ),
                     ),
                     Text(
-                      'R\$${widget.price.toStringAsFixed(2)}',
+                      'R\$${price.toStringAsFixed(2)}',
                       style:
                           Theme.of(context).textTheme.bodySmall,
                     ),
@@ -74,7 +57,7 @@ class _EventCardState extends State<EventCard> {
                 ),
                 const SizedBox(height: 8.0),
                 Text(
-                  widget.title,
+                  title,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 const SizedBox(height: 8.0),
@@ -99,9 +82,9 @@ class _EventCardState extends State<EventCard> {
                       const SizedBox(width: 4.0),
                       Flexible(
                         child: Tooltip(
-                          message: widget.localId,
+                          message: localId,
                           child: Text(
-                            widget.localId,
+                            localId,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall,
@@ -124,7 +107,7 @@ class _EventCardState extends State<EventCard> {
                 ),
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    _togglePurchase();
+                    togglePurchase(title);
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
@@ -139,8 +122,8 @@ class _EventCardState extends State<EventCard> {
                     elevation: 0,
                   ),
                   label:
-                      Text(_isPurchased ? 'Remover' : 'Comprar'),
-                  icon: Icon(_isPurchased
+                      Text(isPurchased ? 'Remover' : 'Comprar'),
+                  icon: Icon(isPurchased
                       ? Icons.remove_shopping_cart
                       : Icons.add_shopping_cart),
                 ),

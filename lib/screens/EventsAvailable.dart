@@ -144,13 +144,12 @@ class _EventsAvailableState extends State<EventsAvailable> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   final event = filteredEvents[index];
-                  final isPurchased = purchasedEventIds.contains(event.id);
+                  bool isPurchased = purchasedEventIds.contains(event.title);
                   return EventCard(
                     date: event.date,
                     price: event.price,
                     title: event.title,
                     localId: event.localId,
-                    eventId: event.title,
                     isPurchased: isPurchased,
                     togglePurchase: (event) {
                       _togglePurchase(event);
