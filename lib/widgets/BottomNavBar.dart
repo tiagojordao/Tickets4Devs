@@ -32,26 +32,20 @@ class BottomNavBar extends StatelessWidget {
                 onPressed: () => context.go('/search'),
               ),
               IconButton(
-                icon: Icon(Icons.shopping_cart),
-                color: Theme.of(context).scaffoldBackgroundColor,
-                onPressed: () => context.go(
-                    '/'), /*Temos que alterar para a tela de carteira quando houver*/
-              ),
-              IconButton(
-                icon: Icon(Icons.person),
-                color: Theme.of(context).scaffoldBackgroundColor,
-                onPressed: () => context.go(
-                    '/'), /*Temos que alterar para a tela de perfil quando houver*/
-              ),
-              IconButton(
                 icon: Icon(Icons.add),
                 color: Theme.of(context).scaffoldBackgroundColor,
                 onPressed: () => context.go('/create_event'),
               ),
               IconButton(
+                icon: Icon(Icons.person),
+                color: Theme.of(context).scaffoldBackgroundColor,
+                onPressed: () => context.go(
+                    '/profile'), 
+              ),
+              IconButton(
                 icon: Icon(Icons.logout),
                 color: Theme.of(context).scaffoldBackgroundColor,
-                onPressed: () => context.go('/login'),
+                onPressed: () => context.go('/signup'),
               ),
             ],
           ),
