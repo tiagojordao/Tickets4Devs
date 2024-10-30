@@ -1,6 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,6 +103,7 @@ class SignUpScreen extends StatelessWidget {
                     foregroundColor: Theme.of(context).scaffoldBackgroundColor,
                   ),
                   onPressed: () {
+                    context.go('/login');
                     // Falta desenvolver forma de salvar cadastro
                   },
                   child: Text(
@@ -108,8 +114,9 @@ class SignUpScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               GestureDetector(
-                onTap: () =>
-                    Navigator.pop(context), // Navegar de volta ao login
+                onTap: () {
+                    context.go('/login');
+                },
                 child: Text(
                   "Já possui uma conta? Entrar",
                   style: TextStyle(

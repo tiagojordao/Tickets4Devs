@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -51,7 +53,7 @@ class BottomNavBar extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.logout),
                 color: Theme.of(context).scaffoldBackgroundColor,
-                onPressed: () => context.go('/login'),
+                onPressed: () => context.go('/'),
               ),
             ],
           ),

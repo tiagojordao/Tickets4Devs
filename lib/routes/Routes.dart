@@ -1,6 +1,9 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tickets4devs/screens/EventsAvailable.dart';
+import 'package:tickets4devs/screens/FirstScreen.dart';
 import 'package:tickets4devs/screens/LoginScreen.dart';
 import 'package:tickets4devs/screens/CreateEventPage.dart';
 import 'package:tickets4devs/screens/SignUpScreen.dart';
@@ -10,7 +13,7 @@ final GoRouter myRouter = GoRouter(routes: <RouteBase>[
   GoRoute(
     path: '/',
     builder: (BuildContext context, GoRouterState state) {
-      return LoginScreen(); // Tela inicial, pode ser alterada para uma tela de boas-vindas
+      return FirstScreenPage(); // Tela inicial, pode ser alterada para uma tela de boas-vindas
     },
   ),
   GoRoute(

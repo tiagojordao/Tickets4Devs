@@ -1,10 +1,12 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tickets4devs/models/Event.dart';
-import 'package:tickets4devs/screens/LoginScreen.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
 
 class EventsAvailable extends StatefulWidget {
+  const EventsAvailable({super.key});
+
   @override
   _EventsAvailableState createState() => _EventsAvailableState();
 }
