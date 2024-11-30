@@ -1,10 +1,13 @@
+import 'dart:convert'; // Para converter JSON
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tickets4devs/models/Event.dart';
-import 'package:tickets4devs/screens/LoginScreen.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
+import 'package:tickets4devs/widgets/EventCard.dart';
+import 'package:http/http.dart' as http;
 
 class EventsAvailable extends StatefulWidget {
+  const EventsAvailable({super.key});
+
   @override
   _EventsAvailableState createState() => _EventsAvailableState();
 }
@@ -14,38 +17,60 @@ class _EventsAvailableState extends State<EventsAvailable> {
 
   /* ESSA LISTA QUE ARMAZENA OS IDS COMPRADOS */
   List<String> purchasedEventIds = [];
-
   String searchQuery = '';
 
-  final List<Event> events = [
-    Event(
-      id: '1',
-      title: 'Halloween 2024',
-      description: '',
-      localId: 'Whiskritório, Natal',
-      date: 'Sab, 30 OUT - 19:00',
-      price: 15.99,
-      totalTickets: 200,
-    ),
-    Event(
-      id: '2',
-      title: 'GGCON',
-      description: '',
-      localId: 'Centro de Convenções, Natal',
-      date: 'Sab, 16 NOV - 10:00',
-      price: 45.00,
-      totalTickets: 500,
-    ),
-    Event(
-      id: '3',
-      title: 'Carnatal',
-      description: '',
-      localId: 'Arena das Dunas, Natal',
-      date: 'Sab, 07 DEZ - 18:00',
-      price: 500.00,
-      totalTickets: 500,
-    ),
-  ];
+  // Lista de eventos, inicialmente vazia
+  List<Event> events = [];
+  bool isLoading = true; 
+  String? errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchEvents(); 
+  }
+
+  Future<void> _fetchEvents() async {
+  try {
+    const String firebaseUrl =
+        'https://tickets4devs2024-default-rtdb.firebaseio.com/events.json';
+
+    final response = await http.get(Uri.parse(firebaseUrl));
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      print('Decoded JSON: $data');
+
+      setState(() {
+        events = data
+            .where((event) => event != null) 
+            .map((eventData) {
+              return Event(
+                id: eventData['id'] ?? '',
+                title: eventData['title'] ?? '',
+                description: eventData['description'] ?? '',
+                localId: eventData['localId'] ?? '',
+                date: eventData['date'] ?? '',
+                price: double.tryParse(eventData['price'].toString()) ?? 0.0,
+                totalTickets:
+                    int.tryParse(eventData['totalTickets'].toString()) ?? 0,
+              );
+            })
+            .toList();
+        isLoading = false;
+      });
+    } else {
+      throw Exception('Erro ao carregar eventos: ${response.statusCode}');
+    }
+  } catch (e) {
+    setState(() {
+      errorMessage = e.toString();
+      isLoading = false;
+    });
+  }
+}
 
   void _togglePurchase(String eventId) {
     setState(() {
@@ -105,160 +130,65 @@ class _EventsAvailableState extends State<EventsAvailable> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16.0, horizontal: 4.0),
-                child: TextField(
-                  style: const TextStyle(
-                      fontSize: 16.0, fontWeight: FontWeight.normal),
-                  decoration: InputDecoration(
-                    hintText: 'Pesquisar eventos...',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide:
-                          BorderSide(color: Theme.of(context).primaryColor),
-                    ),
-                    filled: true,
-                    fillColor: Theme.of(context).primaryColorLight,
-                    prefixIcon: Icon(Icons.search,
-                        color: Theme.of(context).scaffoldBackgroundColor),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      searchQuery = value;
-                    });
-                  },
-                ),
-              ),
-              ListView.builder(
-                itemCount: filteredEvents.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  final event = filteredEvents[index];
-                  final isPurchased = purchasedEventIds.contains(event.id);
-                  return Card(
-                    color: Theme.of(context).primaryColorLight,
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 4.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : errorMessage != null
+              ? Center(child: Text(errorMessage!))
+              : SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    event.date,
-                                    style: const TextStyle(
-                                      fontSize: 16.0,
-                                      color: Color.fromRGBO(162, 194, 73, 1),
-                                    ),
-                                  ),
-                                  Text(
-                                    'R\$${event.price.toStringAsFixed(2)}',
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  ),
-                                ],
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 16.0, horizontal: 4.0),
+                          child: TextField(
+                            style: const TextStyle(
+                                fontSize: 16.0, fontWeight: FontWeight.normal),
+                            decoration: InputDecoration(
+                              hintText: 'Pesquisar eventos...',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor),
                               ),
-                              const SizedBox(height: 8.0),
-                              Text(
-                                event.title,
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              const SizedBox(height: 8.0),
-                            ],
+                              filled: true,
+                              fillColor: Theme.of(context).primaryColorLight,
+                              prefixIcon: Icon(Icons.search,
+                                  color:
+                                      Theme.of(context).scaffoldBackgroundColor),
+                            ),
+                            onChanged: (value) {
+                              setState(() {
+                                searchQuery = value;
+                              });
+                            },
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 16.0, bottom: 8.0),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.location_on,
-                                      color: Theme.of(context)
-                                          .scaffoldBackgroundColor,
-                                      size: 14.0,
-                                    ),
-                                    const SizedBox(width: 4.0),
-                                    Flexible(
-                                      child: Tooltip(
-                                        message: event.localId,
-                                        child: Text(
-                                          event.localId,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              width: 120.0,
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.only(
-                                  bottomRight: Radius.circular(12.0),
-                                ),
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              child: ElevatedButton.icon(
-                                onPressed: () {
-                                  _togglePurchase(event.id);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  backgroundColor: Colors.transparent,
-                                  foregroundColor:
-                                      Theme.of(context).scaffoldBackgroundColor,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      bottomRight: Radius.circular(12.0),
-                                    ),
-                                  ),
-                                  elevation: 0,
-                                ),
-                                label:
-                                    Text(isPurchased ? 'Remover' : 'Comprar'),
-                                icon: Icon(isPurchased
-                                    ? Icons.remove_shopping_cart
-                                    : Icons.add_shopping_cart),
-                              ),
-                            ),
-                          ],
+                        ListView.builder(
+                          itemCount: filteredEvents.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            final event = filteredEvents[index];
+                            bool isPurchased =
+                                purchasedEventIds.contains(event.id);
+                            return EventCard(
+                              date: event.date,
+                              price: event.price,
+                              title: event.title,
+                              localId: event.localId,
+                              isPurchased: isPurchased,
+                              togglePurchase: (eventId) {
+                                _togglePurchase(eventId);
+                              },
+                            );
+                          },
                         ),
                       ],
                     ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
+                  ),
+                ),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

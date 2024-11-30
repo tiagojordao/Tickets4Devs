@@ -1,5 +1,4 @@
 class Event {
-
   final String id;
   final String title;
   final String description;

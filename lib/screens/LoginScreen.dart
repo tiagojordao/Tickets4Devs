@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tickets4devs/routes/Routes.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -55,7 +54,6 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 40),
-            
               SizedBox(
                 width: double.infinity,
                 height: 50,
@@ -68,11 +66,19 @@ class LoginScreen extends StatelessWidget {
                     context.go('/search');
                   },
                   child: Text(
-                    'Login',
+                    'ENTRAR',
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
               ),
+              TextButton(
+                onPressed: () {
+                  context.go('/signup');
+                },
+                child: Text(
+                  "CADASTRO"
+                ),
+              )
             ],
           ),
         ),

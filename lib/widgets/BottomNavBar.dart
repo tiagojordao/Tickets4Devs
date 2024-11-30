@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -5,9 +7,9 @@ class BottomNavBar extends StatelessWidget {
   final int selectedIndex;
 
   const BottomNavBar({
-    Key? key,
+    super.key,
     required this.selectedIndex,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,27 +26,34 @@ class BottomNavBar extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.home),
                 color: Theme.of(context).scaffoldBackgroundColor,
-                onPressed: () => context.go('/'),
+                onPressed: () {},
               ),
               IconButton(
                 icon: Icon(Icons.search),
                 color: Theme.of(context).scaffoldBackgroundColor,
-                onPressed: () => context.go('/search'), 
+                onPressed: () => context.go('/search'),
               ),
               IconButton(
                 icon: Icon(Icons.shopping_cart),
                 color: Theme.of(context).scaffoldBackgroundColor,
-                onPressed: () => context.go('/'), /*Temos que alterar para a tela de carteira quando houver*/
+                onPressed: () {} /*Temos que alterar para a tela de carteira quando houver*/
               ),
               IconButton(
                 icon: Icon(Icons.person),
                 color: Theme.of(context).scaffoldBackgroundColor,
-                onPressed: () => context.go('/'), /*Temos que alterar para a tela de perfil quando houver*/
+                onPressed: () {
+                  context.go('/profile');
+                } /*Temos que alterar para a tela de perfil quando houver*/
+              ),
+              IconButton(
+                icon: Icon(Icons.add),
+                color: Theme.of(context).scaffoldBackgroundColor,
+                onPressed: () => context.go('/create_event'),
               ),
               IconButton(
                 icon: Icon(Icons.logout),
                 color: Theme.of(context).scaffoldBackgroundColor,
-                onPressed: () => context.go('/login'),
+                onPressed: () => context.go('/'),
               ),
             ],
           ),
