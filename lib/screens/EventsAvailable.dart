@@ -22,6 +22,7 @@ class _EventsAvailableState extends State<EventsAvailable> {
   // Lista de eventos, inicialmente vazia
   List<Event> events = [];
   bool isLoading = true; 
+  bool isPurchased = false;
   String? errorMessage;
 
   @override
@@ -73,14 +74,15 @@ class _EventsAvailableState extends State<EventsAvailable> {
 }
 
   void _togglePurchase(String eventId) {
-    setState(() {
-      if (purchasedEventIds.contains(eventId)) {
-        purchasedEventIds.remove(eventId);
-      } else {
-        purchasedEventIds.add(eventId);
-      }
-    });
-  }
+  setState(() {
+    if (purchasedEventIds.contains(eventId)) {
+      purchasedEventIds.remove(eventId);
+    } else {
+      purchasedEventIds.add(eventId);
+    }
+    print('Eventos comprados: $purchasedEventIds');
+  });
+}
 
   List<Event> _getFilteredEvents() {
     if (searchQuery.isEmpty) {
@@ -171,7 +173,7 @@ class _EventsAvailableState extends State<EventsAvailable> {
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
                             final event = filteredEvents[index];
-                            bool isPurchased =
+                            isPurchased =
                                 purchasedEventIds.contains(event.id);
                             return EventCard(
                               date: event.date,

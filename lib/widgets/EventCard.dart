@@ -2,52 +2,68 @@
 import 'package:flutter/material.dart';
 import 'package:tickets4devs/screens/EventDetail.dart';
 
-class EventCard extends StatelessWidget {
-
+class EventCard extends StatefulWidget {
   final String date;
   final double price;
   final String title;
   final String localId;
   final bool isPurchased;
   final Function(String) togglePurchase;
-  
+
   const EventCard({
-      super.key,
-      required this.date,
-      required this.price,
-      required this.title,
-      required this.localId,
-      required this.isPurchased,
-      required this.togglePurchase,
+    super.key,
+    required this.date,
+    required this.price,
+    required this.title,
+    required this.localId,
+    required this.isPurchased,
+    required this.togglePurchase,
   });
 
+  @override
+  _EventCardState createState() => _EventCardState();
+}
+
+class _EventCardState extends State<EventCard> {
+  late bool inCart;
+
+  @override
+  void initState() {
+    super.initState();
+    inCart = widget.isPurchased;
+  }
+
+  void _toggleCartState() {
+    setState(() {
+      inCart = !inCart;
+    });
+    widget.togglePurchase(widget.title);
+  }
+
+  void _openEventDetail() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => EventDetail(
+          date: widget.date,
+          price: widget.price,
+          title: widget.title,
+          localId: widget.localId,
+          isPurchased: inCart,
+          togglePurchase: (event) {
+            _toggleCartState();
+          },
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    void _openEventDetail() {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => EventDetail(
-            date: date,
-            price: price,
-            title: title,
-            localId: localId,
-            isPurchased: isPurchased,
-            togglePurchase: (event) {
-              togglePurchase(event);
-            },
-          ),
-        ),
-      );
-    }
-
     return GestureDetector(
       onTap: _openEventDetail,
       child: Card(
         color: Theme.of(context).primaryColorLight,
-        margin: const EdgeInsets.symmetric(
-            vertical: 8.0, horizontal: 4.0),
+        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
         ),
@@ -60,26 +76,24 @@ class EventCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        date,
+                        widget.date,
                         style: const TextStyle(
                           fontSize: 16.0,
                           color: Color.fromRGBO(162, 194, 73, 1),
                         ),
                       ),
                       Text(
-                        'R\$${price.toStringAsFixed(2)}',
-                        style:
-                            Theme.of(context).textTheme.bodySmall,
+                        'R\$${widget.price.toStringAsFixed(2)}',
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
                   ),
                   const SizedBox(height: 8.0),
                   Text(
-                    title,
+                    widget.title,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 8.0),
@@ -91,8 +105,7 @@ class EventCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 16.0, bottom: 8.0),
+                    padding: const EdgeInsets.only(left: 16.0, bottom: 8.0),
                     child: Row(
                       children: [
                         Icon(
@@ -103,12 +116,10 @@ class EventCard extends StatelessWidget {
                         const SizedBox(width: 4.0),
                         Flexible(
                           child: Tooltip(
-                            message: localId,
+                            message: widget.localId,
                             child: Text(
-                              localId,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall,
+                              widget.localId,
+                              style: Theme.of(context).textTheme.bodySmall,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                             ),
@@ -127,9 +138,7 @@ class EventCard extends StatelessWidget {
                     color: Theme.of(context).primaryColor,
                   ),
                   child: ElevatedButton.icon(
-                    onPressed: () {
-                      togglePurchase(title);
-                    },
+                    onPressed: _toggleCartState,
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.zero,
                       backgroundColor: Colors.transparent,
@@ -142,11 +151,12 @@ class EventCard extends StatelessWidget {
                       ),
                       elevation: 0,
                     ),
-                    label:
-                        Text(isPurchased ? 'Remover' : 'Comprar'),
-                    icon: Icon(isPurchased
-                        ? Icons.remove_shopping_cart
-                        : Icons.add_shopping_cart),
+                    label: Text(inCart ? 'Remover' : 'Comprar'),
+                    icon: Icon(
+                      inCart
+                          ? Icons.remove_shopping_cart
+                          : Icons.add_shopping_cart,
+                    ),
                   ),
                 ),
               ],
