@@ -19,7 +19,6 @@ class _EventsAvailableState extends State<EventsAvailable> {
   List<String> purchasedEventIds = [];
   String searchQuery = '';
 
-  // Lista de eventos, inicialmente vazia
   List<Event> events = [];
   bool isLoading = true; 
   bool isPurchased = false;
