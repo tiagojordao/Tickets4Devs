@@ -36,7 +36,7 @@ class BottomNavBar extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.shopping_cart),
                 color: Theme.of(context).scaffoldBackgroundColor,
-                onPressed: () {} /*Temos que alterar para a tela de carteira quando houver*/
+                onPressed: () => context.go('/cart'),/*Temos que alterar para a tela de carteira quando houver*/
               ),
               IconButton(
                 icon: Icon(Icons.person),

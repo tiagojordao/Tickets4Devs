@@ -8,6 +8,7 @@ import 'package:tickets4devs/screens/LoginScreen.dart';
 import 'package:tickets4devs/screens/CreateEventPage.dart';
 import 'package:tickets4devs/screens/SignUpScreen.dart';
 import 'package:tickets4devs/screens/UserProfileScreen.dart';
+import 'package:tickets4devs/screens/CartPage.dart';
 
 final GoRouter myRouter = GoRouter(routes: <RouteBase>[
   GoRoute(
@@ -47,6 +48,12 @@ final GoRouter myRouter = GoRouter(routes: <RouteBase>[
         name: "Username",
         email: "userEmail@email.com",
       );
+    },
+  ),
+  GoRoute(
+    path: '/cart',
+    builder: (BuildContext context, GoRouterState state) {
+      return CartScreen();
     },
   ),
 ]);

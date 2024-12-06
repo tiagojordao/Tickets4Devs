@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:tickets4devs/screens/EventDetail.dart';
 
 class EventCard extends StatefulWidget {
+  final int id;
   final String date;
   final double price;
   final String title;
   final String localId;
   final bool isPurchased;
-  final Function(String) togglePurchase;
+  final Function(int) togglePurchase;
 
   const EventCard({
     super.key,
+    required this.id,
     required this.date,
     required this.price,
     required this.title,
@@ -37,7 +39,7 @@ class _EventCardState extends State<EventCard> {
     setState(() {
       inCart = !inCart;
     });
-    widget.togglePurchase(widget.title);
+    widget.togglePurchase(widget.id);
   }
 
   void _openEventDetail() {

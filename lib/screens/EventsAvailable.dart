@@ -1,8 +1,10 @@
 import 'dart:convert'; // Para converter JSON
 import 'package:flutter/material.dart';
+import 'package:tickets4devs/models/Cart.dart';
 import 'package:tickets4devs/models/Event.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
 import 'package:tickets4devs/widgets/EventCard.dart';
+import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 class EventsAvailable extends StatefulWidget {
@@ -16,7 +18,7 @@ class _EventsAvailableState extends State<EventsAvailable> {
   final int _selectedIndex = 0;
 
   /* ESSA LISTA QUE ARMAZENA OS IDS COMPRADOS */
-  List<String> purchasedEventIds = [];
+  List<int> purchasedEventIds = [];
   String searchQuery = '';
 
   List<Event> events = [];
@@ -28,6 +30,9 @@ class _EventsAvailableState extends State<EventsAvailable> {
   void initState() {
     super.initState();
     _fetchEvents(); 
+    Provider.of<Cart>(context, listen: false).fetchEvents();
+    purchasedEventIds = Provider.of<Cart>(context, listen: false).cartItemsId;
+    //print( Provider.of<Cart>(context, listen: false).shopItems);
   }
 
   Future<void> _fetchEvents() async {
@@ -36,12 +41,12 @@ class _EventsAvailableState extends State<EventsAvailable> {
         'https://tickets4devs2024-default-rtdb.firebaseio.com/events.json';
 
     final response = await http.get(Uri.parse(firebaseUrl));
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
+    //print('Response status: ${response.statusCode}');
+    //print('Response body: ${response.body}');
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
-      print('Decoded JSON: $data');
+      //print('Decoded JSON: $data');
 
       setState(() {
         events = data
@@ -60,6 +65,7 @@ class _EventsAvailableState extends State<EventsAvailable> {
             })
             .toList();
         isLoading = false;
+        //print(events[0].id);
       });
     } else {
       throw Exception('Erro ao carregar eventos: ${response.statusCode}');
@@ -72,15 +78,18 @@ class _EventsAvailableState extends State<EventsAvailable> {
   }
 }
 
-  void _togglePurchase(String eventId) {
-  setState(() {
-    if (purchasedEventIds.contains(eventId)) {
-      purchasedEventIds.remove(eventId);
-    } else {
-      purchasedEventIds.add(eventId);
-    }
-    print('Eventos comprados: $purchasedEventIds');
-  });
+  void _togglePurchase(int eventId) {
+    //print( Provider.of<Cart>(context, listen: false).shopItems);
+    setState(() {
+      if (purchasedEventIds.contains(eventId)) {
+        purchasedEventIds.remove(eventId);
+        Provider.of<Cart>(context, listen: false).removeItemFromCart(eventId);
+      } else {
+        purchasedEventIds.add(eventId);
+        Provider.of<Cart>(context, listen: false).addItemToCard(eventId);
+      }
+      //print('Eventos comprados: $purchasedEventIds');
+    });
 }
 
   List<Event> _getFilteredEvents() {
@@ -175,6 +184,7 @@ class _EventsAvailableState extends State<EventsAvailable> {
                             isPurchased =
                                 purchasedEventIds.contains(event.id);
                             return EventCard(
+                              id: event.id,
                               date: event.date,
                               price: event.price,
                               title: event.title,
