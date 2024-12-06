@@ -12,11 +12,12 @@ class UserProfileScreen extends StatelessWidget {
   final String email;
 
   const UserProfileScreen({
-    Key? key,
+    super.key,
     required this.name,
     required this.email,
-  }) : super(key: key);
+  });
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(

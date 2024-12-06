@@ -2,12 +2,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tickets4devs/models/UserNotifier.dart';
+import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController nameController = TextEditingController();
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
+    final TextEditingController confirmPasswordController = TextEditingController();
+
+    Provider.of<UserNotifier>(context, listen: false).fetchUsers();
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Center(
@@ -25,6 +34,7 @@ class SignUpScreen extends StatelessWidget {
               ),
               const SizedBox(height: 64),
               TextField(
+                controller: nameController,
                 style: TextStyle(color: Theme.of(context).primaryColorLight),
                 decoration: InputDecoration(
                   labelText: 'Nome',
@@ -42,6 +52,7 @@ class SignUpScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               TextField(
+                controller: emailController,
                 style: TextStyle(color: Theme.of(context).primaryColorLight),
                 decoration: InputDecoration(
                   labelText: 'Email',
@@ -60,6 +71,7 @@ class SignUpScreen extends StatelessWidget {
               const SizedBox(height: 20),
               TextField(
                 obscureText: true,
+                controller: passwordController,
                 style: TextStyle(color: Theme.of(context).primaryColorLight),
                 decoration: InputDecoration(
                   labelText: 'Senha',
@@ -78,6 +90,7 @@ class SignUpScreen extends StatelessWidget {
               const SizedBox(height: 20),
               TextField(
                 obscureText: true,
+                controller: confirmPasswordController,
                 style: TextStyle(color: Theme.of(context).primaryColorLight),
                 decoration: InputDecoration(
                   labelText: 'Confirmar Senha',
@@ -103,8 +116,27 @@ class SignUpScreen extends StatelessWidget {
                     foregroundColor: Theme.of(context).scaffoldBackgroundColor,
                   ),
                   onPressed: () {
-                    context.go('/login');
-                    // Falta desenvolver forma de salvar cadastro
+                    
+                    if (passwordController.text == confirmPasswordController.text) {
+                      if (Provider.of<UserNotifier>(context, listen: false).emailValido(emailController.text)) {
+                        Provider.of<UserNotifier>(context, listen: false).registerUser(
+                          emailController.text,
+                          nameController.text,
+                          passwordController.text,
+                        );
+
+                        context.go('/login');
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('E-mail já cadastrado')),
+                        );
+                      }
+                      
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('As senhas não coincidem!')),
+                      );
+                    }
                   },
                   child: Text(
                     'Cadastrar',

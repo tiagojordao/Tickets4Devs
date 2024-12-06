@@ -3,6 +3,8 @@ import 'package:tickets4devs/models/Event.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
 
 class CreateEventPage extends StatefulWidget {
+  const CreateEventPage({super.key});
+
   @override
   _CreateEventPageState createState() => _CreateEventPageState();
 }
@@ -41,7 +43,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
   void _saveEvent() {
     if (_formKey.currentState!.validate() && _selectedDate != null) {
       final newEvent = Event(
-        id: DateTime.now().toString(),
+        id: 1, /* Alterar isso para o ID autoincremental */
         title: _titleController.text,
         description: _descriptionController.text,
         localId: _localController.text,
