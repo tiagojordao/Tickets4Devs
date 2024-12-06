@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:tickets4devs/screens/EventDetail.dart';
 
 class EventCard extends StatefulWidget {
-  final int id;
+  final String id;
   final String date;
   final double price;
   final String title;
   final String localId;
   final bool isPurchased;
-  final Function(int) togglePurchase;
+  final Function(String) togglePurchase;
 
   const EventCard({
     super.key,

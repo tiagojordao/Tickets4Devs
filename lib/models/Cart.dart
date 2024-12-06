@@ -19,13 +19,14 @@ class Cart extends ChangeNotifier {
       final response = await http.get(Uri.parse(firebaseUrl));
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
+        final Map<String, dynamic> data = jsonDecode(response.body); 
 
-        _shopItems = data
-            .where((event) => event != null)
-            .map((eventData) {
+        _shopItems = data.entries
+            .where((entry) => entry.value != null)
+            .map((entry) {
+            final eventData = entry.value;
               return Event(
-                id: eventData['id'] ?? '',
+                id: entry.key,
                 title: eventData['title'] ?? '',
                 description: eventData['description'] ?? '',
                 localId: eventData['localId'] ?? '',
@@ -36,7 +37,6 @@ class Cart extends ChangeNotifier {
               );
             })
             .toList();
-
         isLoading = false;
         notifyListeners();
       } else {
@@ -44,6 +44,8 @@ class Cart extends ChangeNotifier {
       }
     } catch (e) {
       errorMessage = e.toString();
+      print("erro:");
+      print(e);
       isLoading = false;
       notifyListeners();
     }
@@ -56,41 +58,29 @@ class Cart extends ChangeNotifier {
   get cartItems => _cartItems;
 
   get cartItemsId{
-    List<int> cartItemsId = [];
+    List<String> cartItemsId = [];
     for (var i = 0; i < _cartItems.length; i++) {
       cartItemsId.add(_cartItems[i].id);
     }
     return cartItemsId;
   }
 
-  void addItemToCard(int index){
-    if ((index <= _shopItems.length)) {
-      _cartItems.add(_shopItems[index-1]);
-      print("Adicionado ao carrinho : " + _shopItems[index-1].title);
-      notifyListeners();
-    }
+  void addItemFromCartById(String id){
+      final event = _shopItems.firstWhere((item) => item.id == id);
+      if (event != null) {
+        _cartItems.add(event);
+        print("Adicionado ao carrinho: ${event.title}");
+        notifyListeners();
+      }
   }
 
-  void removeItemFromCart(int index){
-    if ((index <= _shopItems.length)) {
-      for (var i = 0; i < _cartItems.length; i++) {
-        if (_cartItems[i].id == _shopItems[index-1].id) {
-          _cartItems.removeAt(i);
-        }
+  void removeItemFromCartById(String id){
+      final index = _cartItems.indexWhere((item) => item.id == id);
+      if (index != -1) {
+        print("Removido do carrinho: ${_cartItems[index].title}");
+        _cartItems.removeAt(index);
+        notifyListeners();
       }
-      print("Removido do carrinho : " + _shopItems[index-1].title);
-      notifyListeners();
-    }
-  }
-
-  void removeItemFromCartById(int id){
-      for (var i = 0; i < _cartItems.length; i++) {
-        if (_cartItems[i].id == id) {
-          print("Removido do carrinho : " + _cartItems[i].title);
-          _cartItems.removeAt(i);
-        }
-      }
-      notifyListeners();
   }
 
   String calculateTotal(){
