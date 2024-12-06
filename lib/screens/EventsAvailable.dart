@@ -18,7 +18,7 @@ class _EventsAvailableState extends State<EventsAvailable> {
   final int _selectedIndex = 0;
 
   /* ESSA LISTA QUE ARMAZENA OS IDS COMPRADOS */
-  List<int> purchasedEventIds = [];
+  List<String> purchasedEventIds = [];
   String searchQuery = '';
 
   List<Event> events = [];
@@ -38,22 +38,20 @@ class _EventsAvailableState extends State<EventsAvailable> {
   Future<void> _fetchEvents() async {
   try {
     const String firebaseUrl =
-        'https://tickets4devs2024-default-rtdb.firebaseio.com/events.json';
+          'https://tickets4devs2024-default-rtdb.firebaseio.com/events.json';
 
-    final response = await http.get(Uri.parse(firebaseUrl));
-    //print('Response status: ${response.statusCode}');
-    //print('Response body: ${response.body}');
+      final response = await http.get(Uri.parse(firebaseUrl));
 
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      //print('Decoded JSON: $data');
+      if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body); 
 
       setState(() {
-        events = data
-            .where((event) => event != null) 
-            .map((eventData) {
+        events = data.entries
+            .where((entry) => entry.value != null)
+            .map((entry) {
+            final eventData = entry.value;
               return Event(
-                id: eventData['id'] ?? '',
+                id: entry.key,
                 title: eventData['title'] ?? '',
                 description: eventData['description'] ?? '',
                 localId: eventData['localId'] ?? '',
@@ -65,7 +63,6 @@ class _EventsAvailableState extends State<EventsAvailable> {
             })
             .toList();
         isLoading = false;
-        //print(events[0].id);
       });
     } else {
       throw Exception('Erro ao carregar eventos: ${response.statusCode}');
@@ -78,15 +75,17 @@ class _EventsAvailableState extends State<EventsAvailable> {
   }
 }
 
-  void _togglePurchase(int eventId) {
+  void _togglePurchase(String eventId) {
     //print( Provider.of<Cart>(context, listen: false).shopItems);
     setState(() {
       if (purchasedEventIds.contains(eventId)) {
         purchasedEventIds.remove(eventId);
-        Provider.of<Cart>(context, listen: false).removeItemFromCart(eventId);
+        //print(purchasedEventIds);
+        Provider.of<Cart>(context, listen: false).removeItemFromCartById(eventId);
       } else {
         purchasedEventIds.add(eventId);
-        Provider.of<Cart>(context, listen: false).addItemToCard(eventId);
+        //print(purchasedEventIds);
+        Provider.of<Cart>(context, listen: false).addItemFromCartById(eventId);
       }
       //print('Eventos comprados: $purchasedEventIds');
     });
@@ -190,8 +189,8 @@ class _EventsAvailableState extends State<EventsAvailable> {
                               title: event.title,
                               localId: event.localId,
                               isPurchased: isPurchased,
-                              togglePurchase: (eventId) {
-                                _togglePurchase(eventId);
+                              togglePurchase: (eventid){
+                                _togglePurchase(eventid);
                               },
                             );
                           },
