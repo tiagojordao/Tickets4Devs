@@ -1,14 +1,18 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:tickets4devs/models/UserNotifier.dart';
 import 'package:tickets4devs/routes/Routes.dart';
 import 'package:provider/provider.dart';
 import 'package:tickets4devs/models/Cart.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => Cart(), 
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => Cart()),
+        ChangeNotifierProvider(create: (context) => UserNotifier()),
+      ],
       child: MyApp(),
     ),
   );
