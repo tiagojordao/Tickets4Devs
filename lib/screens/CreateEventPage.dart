@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tickets4devs/models/Event.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class CreateEventPage extends StatefulWidget {
   const CreateEventPage({super.key});
@@ -39,6 +41,45 @@ class _CreateEventPageState extends State<CreateEventPage> {
     }
   }
 
+  void _saveEventToDatabase(Event newEvent) async {
+    try {
+      const String firebaseUrl =
+          'https://tickets4devs2024-default-rtdb.firebaseio.com/events.json';
+
+      // Enviar evento para o Firebase
+      final response = await http.post(
+        Uri.parse(firebaseUrl),
+        body: jsonEncode({
+          'title': newEvent.title,
+          'description': newEvent.description,
+          'localId': newEvent.localId,
+          'date': newEvent.date,
+          'price': newEvent.price,
+          'totalTickets': newEvent.totalTickets,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text('Evento "${newEvent.title}" criado com sucesso!')),
+        );
+
+        // Limpar os campos após criar o evento
+        _formKey.currentState!.reset();
+        setState(() {
+          _selectedDate = null;
+        });
+      } else {
+        throw Exception('Erro ao salvar evento: ${response.statusCode}');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao criar evento: $e')),
+      );
+    }
+  }
+
   // Função para salvar o evento
   void _saveEvent() {
     if (_formKey.currentState!.validate() && _selectedDate != null) {
@@ -52,9 +93,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
         totalTickets: int.parse(_ticketsController.text),
       );
 
-      // adicionar logica para salvamento
+      _saveEventToDatabase(newEvent);
 
-      // Exemplo de feedback visual
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Evento "${newEvent.title}" criado!')),
       );

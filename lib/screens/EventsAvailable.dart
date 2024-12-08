@@ -22,58 +22,56 @@ class _EventsAvailableState extends State<EventsAvailable> {
   String searchQuery = '';
 
   List<Event> events = [];
-  bool isLoading = true; 
+  bool isLoading = true;
   bool isPurchased = false;
   String? errorMessage;
 
   @override
   void initState() {
     super.initState();
-    _fetchEvents(); 
+    _fetchEvents();
     Provider.of<Cart>(context, listen: false).fetchEvents();
     purchasedEventIds = Provider.of<Cart>(context, listen: false).cartItemsId;
     //print( Provider.of<Cart>(context, listen: false).shopItems);
   }
 
   Future<void> _fetchEvents() async {
-  try {
-    const String firebaseUrl =
+    try {
+      const String firebaseUrl =
           'https://tickets4devs2024-default-rtdb.firebaseio.com/events.json';
 
       final response = await http.get(Uri.parse(firebaseUrl));
 
       if (response.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(response.body); 
+        final Map<String, dynamic> data = jsonDecode(response.body);
 
-      setState(() {
-        events = data.entries
-            .where((entry) => entry.value != null)
-            .map((entry) {
+        setState(() {
+          events =
+              data.entries.where((entry) => entry.value != null).map((entry) {
             final eventData = entry.value;
-              return Event(
-                id: entry.key,
-                title: eventData['title'] ?? '',
-                description: eventData['description'] ?? '',
-                localId: eventData['localId'] ?? '',
-                date: eventData['date'] ?? '',
-                price: double.tryParse(eventData['price'].toString()) ?? 0.0,
-                totalTickets:
-                    int.tryParse(eventData['totalTickets'].toString()) ?? 0,
-              );
-            })
-            .toList();
+            return Event(
+              id: entry.key,
+              title: eventData['title'] ?? '',
+              description: eventData['description'] ?? '',
+              localId: eventData['localId'] ?? '',
+              date: eventData['date'] ?? '',
+              price: double.tryParse(eventData['price'].toString()) ?? 0.0,
+              totalTickets:
+                  int.tryParse(eventData['totalTickets'].toString()) ?? 0,
+            );
+          }).toList();
+          isLoading = false;
+        });
+      } else {
+        throw Exception('Erro ao carregar eventos: ${response.statusCode}');
+      }
+    } catch (e) {
+      setState(() {
+        errorMessage = e.toString();
         isLoading = false;
       });
-    } else {
-      throw Exception('Erro ao carregar eventos: ${response.statusCode}');
     }
-  } catch (e) {
-    setState(() {
-      errorMessage = e.toString();
-      isLoading = false;
-    });
   }
-}
 
   void _togglePurchase(String eventId) {
     //print( Provider.of<Cart>(context, listen: false).shopItems);
@@ -81,7 +79,8 @@ class _EventsAvailableState extends State<EventsAvailable> {
       if (purchasedEventIds.contains(eventId)) {
         purchasedEventIds.remove(eventId);
         //print(purchasedEventIds);
-        Provider.of<Cart>(context, listen: false).removeItemFromCartById(eventId);
+        Provider.of<Cart>(context, listen: false)
+            .removeItemFromCartById(eventId);
       } else {
         purchasedEventIds.add(eventId);
         //print(purchasedEventIds);
@@ -89,7 +88,7 @@ class _EventsAvailableState extends State<EventsAvailable> {
       }
       //print('Eventos comprados: $purchasedEventIds');
     });
-}
+  }
 
   List<Event> _getFilteredEvents() {
     if (searchQuery.isEmpty) {
@@ -164,8 +163,8 @@ class _EventsAvailableState extends State<EventsAvailable> {
                               filled: true,
                               fillColor: Theme.of(context).primaryColorLight,
                               prefixIcon: Icon(Icons.search,
-                                  color:
-                                      Theme.of(context).scaffoldBackgroundColor),
+                                  color: Theme.of(context)
+                                      .scaffoldBackgroundColor),
                             ),
                             onChanged: (value) {
                               setState(() {
@@ -180,8 +179,7 @@ class _EventsAvailableState extends State<EventsAvailable> {
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
                             final event = filteredEvents[index];
-                            isPurchased =
-                                purchasedEventIds.contains(event.id);
+                            isPurchased = purchasedEventIds.contains(event.id);
                             return EventCard(
                               id: event.id,
                               date: event.date,
@@ -189,7 +187,7 @@ class _EventsAvailableState extends State<EventsAvailable> {
                               title: event.title,
                               localId: event.localId,
                               isPurchased: isPurchased,
-                              togglePurchase: (eventid){
+                              togglePurchase: (eventid) {
                                 _togglePurchase(eventid);
                               },
                             );
