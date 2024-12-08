@@ -4,7 +4,6 @@ import 'package:tickets4devs/models/Cart.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
 
 class CartScreen extends StatelessWidget {
-
   const CartScreen({super.key});
 
   @override
@@ -65,16 +64,20 @@ class CartScreen extends StatelessWidget {
                         child: ListTile(
                           title: Text(
                             value.cartItems[index].title,
-                            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                                fontSize: 16.0, fontWeight: FontWeight.bold),
                           ),
                           subtitle: Text(
                             'R\$${value.cartItems[index].price.toStringAsFixed(2)}',
-                            style: const TextStyle(color: Colors.grey, fontSize: 14.0),
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 14.0),
                           ),
                           trailing: IconButton(
-                            icon: const Icon(Icons.cancel, color: Color.fromRGBO(162, 194, 73, 1)),
+                            icon: const Icon(Icons.cancel,
+                                color: Color.fromRGBO(162, 194, 73, 1)),
                             onPressed: () {
-                              value.removeItemFromCartById(value.cartItems[index].id);
+                              value.removeItemFromCartById(
+                                  value.cartItems[index].id);
                             },
                           ),
                         ),
@@ -98,48 +101,63 @@ class CartScreen extends StatelessWidget {
                           children: [
                             const Text(
                               'Total:',
-                              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.white),
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
                             Text(
                               'R\$${value.calculateTotal()}',
-                              style: const TextStyle(fontSize: 18.0, color: Colors.white),
+                              style: const TextStyle(
+                                  fontSize: 18.0, color: Colors.white),
                             ),
                           ],
                         ),
                         ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.transparent, 
-                            foregroundColor: Theme.of(context).primaryColorLight, 
-                            side: BorderSide(color: Theme.of(context).primaryColorLight, width: 2.0), 
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            foregroundColor:
+                                Theme.of(context).primaryColorLight,
+                            side: BorderSide(
+                                color: Theme.of(context).primaryColorLight,
+                                width: 2.0),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4.0), 
+                              borderRadius: BorderRadius.circular(4.0),
                             ),
-                            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0), 
-                            textStyle: const TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12.0, vertical: 8.0),
+                            textStyle: const TextStyle(
+                                fontSize: 14.0, fontWeight: FontWeight.w400),
                             elevation: 0,
                           ),
-                          onPressed: value.cartItems.isEmpty ? null : (){
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: const Text('Compra Finalizada'),
-                                  content: const Text('O ingresso foi enviado para sua caixa de e-mail!'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: const Text(
-                                        'Fechar',
-                                        style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromRGBO(162, 194, 73, 1)),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
+                          onPressed: value.cartItems.isEmpty
+                              ? null
+                              : () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: const Text('Compra Finalizada'),
+                                        content: const Text(
+                                            'O ingresso foi enviado para sua caixa de e-mail!'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text(
+                                              'Fechar',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color.fromRGBO(
+                                                      162, 194, 73, 1)),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
                           child: const Text('Finalizar Compra'),
                         ),
                       ],
@@ -151,7 +169,7 @@ class CartScreen extends StatelessWidget {
           );
         },
       ),
-       bottomNavigationBar: Column(
+      bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           const Divider(
