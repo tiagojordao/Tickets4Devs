@@ -10,6 +10,7 @@ class EventCard extends StatefulWidget {
   final String localId;
   final bool isPurchased;
   final Function(String) togglePurchase;
+  final Function onEventDeleted;
 
   const EventCard({
     super.key,
@@ -20,6 +21,7 @@ class EventCard extends StatefulWidget {
     required this.localId,
     required this.isPurchased,
     required this.togglePurchase,
+    required this.onEventDeleted,
   });
 
   @override
@@ -46,6 +48,7 @@ class _EventCardState extends State<EventCard> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => EventDetail(
+          eventId: widget.id,
           date: widget.date,
           price: widget.price,
           title: widget.title,
@@ -53,6 +56,9 @@ class _EventCardState extends State<EventCard> {
           isPurchased: inCart,
           togglePurchase: (event) {
             _toggleCartState();
+          },
+          onEventDeleted: () {
+            widget.onEventDeleted();
           },
         ),
       ),

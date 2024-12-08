@@ -190,6 +190,7 @@ class _EventsAvailableState extends State<EventsAvailable> {
                               togglePurchase: (eventid) {
                                 _togglePurchase(eventid);
                               },
+                              onEventDeleted: _fetchEvents,
                             );
                           },
                         ),
