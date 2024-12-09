@@ -1,10 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:tickets4devs/models/UserNotifier.dart';
+import 'package:tickets4devs/notifiers/EventNotifier.dart';
+import 'package:tickets4devs/notifiers/UserNotifier.dart';
 import 'package:tickets4devs/routes/Routes.dart';
 import 'package:provider/provider.dart';
-import 'package:tickets4devs/models/Cart.dart';
+import 'package:tickets4devs/notifiers/Cart.dart';
 
 void main() {
   runApp(

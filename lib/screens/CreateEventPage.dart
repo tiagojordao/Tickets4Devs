@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tickets4devs/models/Event.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
+import 'package:tickets4devs/notifiers/UserNotifier.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -55,6 +57,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
           'localId': newEvent.localId,
           'date': newEvent.date,
           'price': newEvent.price,
+          'criador' : newEvent.criador,
           'totalTickets': newEvent.totalTickets,
         }),
       );
@@ -89,6 +92,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
         description: _descriptionController.text,
         localId: _localController.text,
         date: _selectedDate!, // Armazena a data como string
+        criador: Provider.of<UserNotifier>(context, listen: false).userLogado,
         price: double.parse(_priceController.text),
         totalTickets: int.parse(_ticketsController.text),
       );
