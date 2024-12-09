@@ -1,10 +1,7 @@
-// ignore_for_file: file_names, unused_import, no_leading_underscores_for_local_identifiers, prefer_const_constructors, must_be_immutable
-
 import 'package:flutter/material.dart';
-import 'package:tickets4devs/models/Event.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:tickets4devs/notifiers/EventNotifier.dart';
 
 class EventDetail extends StatefulWidget {
   final String eventId;
@@ -12,6 +9,7 @@ class EventDetail extends StatefulWidget {
   final double price;
   final String title;
   final String localId;
+  final String descricao;
   bool isPurchased;
   final Function(String) togglePurchase;
   final Function onEventDeleted;
@@ -23,6 +21,7 @@ class EventDetail extends StatefulWidget {
     required this.price,
     required this.title,
     required this.localId,
+    required this.descricao,
     required this.isPurchased,
     required this.togglePurchase,
     required this.onEventDeleted,
@@ -34,52 +33,18 @@ class EventDetail extends StatefulWidget {
 
 class _EventDetailState extends State<EventDetail> {
   final int _selectedIndex = 0;
+  late EventNotifier _userNotifier;
+
+  @override
+  void initState() {
+    super.initState();
+    _userNotifier = EventNotifier();
+  }
 
   void _togglePurchase() {
     setState(() {
       widget.isPurchased = !widget.isPurchased;
     });
-  }
-
-  void _deleteEventFromDatabase(String eventId) async {
-    try {
-      final String firebaseUrl =
-          'https://tickets4devs2024-default-rtdb.firebaseio.com/events/${Uri.encodeFull(eventId)}.json';
-
-      print(eventId);
-
-      final responseGet = await http.get(Uri.parse(firebaseUrl));
-      if (responseGet.statusCode != 200 || responseGet.body == 'null') {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Evento não encontrado para exclusão!')),
-        );
-        return;
-      }
-
-      // Enviar requisição DELETE para o Firebase
-      final response = await http.delete(Uri.parse(firebaseUrl));
-      print('Response Status: ${response.statusCode}');
-      print('Response Body: ${response.body}');
-
-      if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Evento removido com sucesso!')),
-        );
-
-        // Atualizar o estado ou fazer outras ações necessárias
-        /*setState(() {
-          // Atualizar o estado
-        }); */
-        widget.onEventDeleted();
-        Navigator.of(context).pop(true);
-      } else {
-        throw Exception('Erro ao remover evento: ${response.statusCode}');
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro ao remover evento: $e')),
-      );
-    }
   }
 
   void _showDeleteConfirmation(BuildContext context) {
@@ -105,14 +70,10 @@ class _EventDetailState extends State<EventDetail> {
                 backgroundColor: Colors.red,
                 foregroundColor: Colors.white,
               ),
-              onPressed: () {
-                _deleteEventFromDatabase(widget.eventId);
+              onPressed: () async {
                 Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Evento removido com sucesso!'),
-                  ),
-                );
+                await _userNotifier.deleteEvent(widget.eventId);
+                widget.onEventDeleted();
               },
               child: Text('Remover'),
             ),
@@ -175,7 +136,7 @@ class _EventDetailState extends State<EventDetail> {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             Text(
-              "Sem descrição!",
+              widget.descricao,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 24.0),
@@ -184,26 +145,22 @@ class _EventDetailState extends State<EventDetail> {
               style: const TextStyle(fontSize: 20.0),
             ),
             const SizedBox(height: 24.0),
-            const SizedBox(height: 8.0),
             const Spacer(),
-
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red, // Botão com cor vermelha
+                  backgroundColor: Colors.red,
                   foregroundColor: Colors.white,
                 ),
                 onPressed: () {
-                  // Função de remoção
                   _showDeleteConfirmation(context);
                 },
                 icon: Icon(Icons.delete),
                 label: Text('Remover Evento'),
               ),
             ),
-            const SizedBox(height: 16.0), // Espaço entre os botões
-
+            const SizedBox(height: 16.0),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(

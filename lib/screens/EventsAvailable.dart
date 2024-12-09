@@ -1,6 +1,6 @@
 import 'dart:convert'; // Para converter JSON
 import 'package:flutter/material.dart';
-import 'package:tickets4devs/models/Cart.dart';
+import 'package:tickets4devs/notifiers/Cart.dart';
 import 'package:tickets4devs/models/Event.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
 import 'package:tickets4devs/widgets/EventCard.dart';
@@ -186,6 +186,7 @@ class _EventsAvailableState extends State<EventsAvailable> {
                               price: event.price,
                               title: event.title,
                               localId: event.localId,
+                              descricao: event.description,
                               isPurchased: isPurchased,
                               togglePurchase: (eventid) {
                                 _togglePurchase(eventid);

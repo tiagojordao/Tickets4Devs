@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tickets4devs/models/Cart.dart';
+import 'package:tickets4devs/notifiers/Cart.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
 
 class CartScreen extends StatelessWidget {

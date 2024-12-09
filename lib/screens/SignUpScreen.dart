@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tickets4devs/models/UserNotifier.dart';
+import 'package:tickets4devs/notifiers/UserNotifier.dart';
 import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatelessWidget {

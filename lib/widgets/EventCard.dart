@@ -8,6 +8,7 @@ class EventCard extends StatefulWidget {
   final double price;
   final String title;
   final String localId;
+  final String descricao;
   final bool isPurchased;
   final Function(String) togglePurchase;
   final Function onEventDeleted;
@@ -19,6 +20,7 @@ class EventCard extends StatefulWidget {
     required this.price,
     required this.title,
     required this.localId,
+    required this.descricao,
     required this.isPurchased,
     required this.togglePurchase,
     required this.onEventDeleted,
@@ -53,6 +55,7 @@ class _EventCardState extends State<EventCard> {
           price: widget.price,
           title: widget.title,
           localId: widget.localId,
+          descricao: widget.descricao,
           isPurchased: inCart,
           togglePurchase: (event) {
             _toggleCartState();
