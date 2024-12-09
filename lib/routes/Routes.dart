@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tickets4devs/screens/EditEvent.dart';
 import 'package:tickets4devs/screens/EventsAvailable.dart';
 import 'package:tickets4devs/screens/FirstScreen.dart';
 import 'package:tickets4devs/screens/HomeScreen.dart';
@@ -63,4 +64,18 @@ final GoRouter myRouter = GoRouter(routes: <RouteBase>[
       return CartScreen();
     },
   ),
+  GoRoute(
+      path: '/edit-event',
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        return EditEvent(
+          eventId: args['eventId'],
+          date: args['date'],
+          price: args['price'],
+          title: args['title'],
+          localId: args['localId'],
+          descricao: args['descricao'],
+        );
+      },
+    ),
 ]);

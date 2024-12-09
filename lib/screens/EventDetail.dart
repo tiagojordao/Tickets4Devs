@@ -4,12 +4,12 @@ import 'package:tickets4devs/widgets/BottomNavBar.dart';
 import 'package:tickets4devs/notifiers/EventNotifier.dart';
 
 class EventDetail extends StatefulWidget {
-  final String eventId;
-  final String date;
-  final double price;
-  final String title;
-  final String localId;
-  final String descricao;
+  String eventId;
+  String date;
+  double price;
+  String title;
+  String localId;
+  String descricao;
   bool isPurchased;
   final String creatorId; // ID do criador do evento
   final String userId; // ID do usuário logado
@@ -26,7 +26,7 @@ class EventDetail extends StatefulWidget {
     required this.descricao,
     required this.isPurchased,
     required this.creatorId,
-    required this.userId, // Adicionando o parâmetro para o usuário logado
+    required this.userId, 
     required this.togglePurchase,
     required this.onEventDeleted,
   });
@@ -153,6 +153,40 @@ class _EventDetailState extends State<EventDetail> {
             
             // Verificando se o usuário logado é o criador do evento
             if (widget.creatorId == widget.userId) ...[
+              SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                ),
+                onPressed: () async {
+                final updatedEvent = await GoRouter.of(context).push(
+                  '/edit-event',
+                  extra: {
+                    'eventId': widget.eventId,
+                    'date': widget.date,
+                    'price': widget.price,
+                    'title': widget.title,
+                    'localId': widget.localId,
+                    'descricao': widget.descricao,
+                  },
+                );
+
+                if (updatedEvent != null && updatedEvent is Map<String, dynamic>) {
+                setState(() {
+                  widget.title = updatedEvent['title'];
+                  widget.date = updatedEvent['date'];
+                  widget.price = updatedEvent['price'];
+                  widget.localId = updatedEvent['localId'];
+                  widget.descricao = updatedEvent['descricao'];
+                });
+              }
+              },
+                icon: Icon(Icons.edit),
+                label: Text('Editar Evento'),
+              ),
+            ),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
