@@ -54,7 +54,7 @@ class BottomNavBar extends StatelessWidget {
                   icon: Icon(Icons.wallet_sharp),
                   color: Theme.of(context).scaffoldBackgroundColor,
                   onPressed: () {
-                    context.go('/profile');
+                    context.go('/wallet');
                   }
                 ),
                 IconButton(

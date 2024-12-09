@@ -14,6 +14,7 @@ class EventCard extends StatefulWidget {
   final String user;
   final Function(String) togglePurchase;
   final Function onEventDeleted;
+  final bool? shouldBuy;
 
   const EventCard({
     super.key,
@@ -28,6 +29,7 @@ class EventCard extends StatefulWidget {
     required this.user,
     required this.togglePurchase,
     required this.onEventDeleted,
+    this.shouldBuy = true,
   });
 
   @override
@@ -154,7 +156,7 @@ class _EventCardState extends State<EventCard> {
                     ),
                     color: Theme.of(context).primaryColor,
                   ),
-                  child: ElevatedButton.icon(
+                  child: widget.shouldBuy == true ? ElevatedButton.icon(
                     onPressed: _toggleCartState,
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.zero,
@@ -174,7 +176,7 @@ class _EventCardState extends State<EventCard> {
                           ? Icons.remove_shopping_cart
                           : Icons.add_shopping_cart,
                     ),
-                  ),
+                  ) : null,
                 ),
               ],
             ),

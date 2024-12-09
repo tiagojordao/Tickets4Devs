@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:tickets4devs/notifiers/EventNotifier.dart';
 import 'package:tickets4devs/notifiers/UserNotifier.dart';
+import 'package:tickets4devs/notifiers/WalletNotifier.dart';
 import 'package:tickets4devs/routes/Routes.dart';
 import 'package:provider/provider.dart';
 import 'package:tickets4devs/notifiers/Cart.dart';
@@ -13,6 +14,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => Cart()),
         ChangeNotifierProvider(create: (context) => UserNotifier()),
+        ChangeNotifierProvider(create: (context) => WalletNotifier()),
       ],
       child: MyApp(),
     ),

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tickets4devs/models/Event.dart';
+import 'package:tickets4devs/models/Ticket.dart';
 
 class Cart extends ChangeNotifier {
   List<Event> _shopItems = []; 
@@ -52,7 +53,7 @@ class Cart extends ChangeNotifier {
     }
   }
 
-  List _cartItems = [];
+  List<Event> _cartItems = [];
 
   get shopItems => _shopItems;
 
@@ -94,5 +95,40 @@ class Cart extends ChangeNotifier {
       totalPrice += _cartItems[i].price;
     }
     return totalPrice.toStringAsFixed(2);
+  }
+
+  Future<void> purchaseTickets(String userId) async {
+    try {
+
+      var response;
+      const String firebaseUrl =
+          'https://tickets4devs2024-default-rtdb.firebaseio.com/tickets.json';
+
+
+      for (var event in _cartItems) {
+        Ticket t = new Ticket(
+          id: '',
+          userId: userId,
+          eventId: event.id,
+          purchaseDate: DateTime.now(),
+          price: event.price
+        );
+
+        response = await http.post(
+          Uri.parse(firebaseUrl),
+          body: jsonEncode(t)
+        );
+      }
+
+      if(response.statusCode == 200) {
+        print('Tickets adicionados com sucesso!');
+        notifyListeners();
+      } 
+      else {
+        throw Exception('Erro ao comprar tickets: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Erro ao comprar tickets: $e');
+    }
   }
 }

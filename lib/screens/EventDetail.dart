@@ -56,8 +56,8 @@ class _EventDetailState extends State<EventDetail> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirmar remoção'),
-          content: Text('Tem certeza de que deseja remover este evento?'),
+          title: const Text('Confirmar remoção'),
+          content: const Text('Tem certeza de que deseja remover este evento?'),
           actions: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -67,7 +67,7 @@ class _EventDetailState extends State<EventDetail> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancelar'),
+              child: const Text('Cancelar'),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -203,7 +203,6 @@ class _EventDetailState extends State<EventDetail> {
               ),
               const SizedBox(height: 16.0),
             ],
-
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(

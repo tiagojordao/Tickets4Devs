@@ -11,18 +11,25 @@ import 'package:tickets4devs/screens/CreateEventPage.dart';
 import 'package:tickets4devs/screens/SignUpScreen.dart';
 import 'package:tickets4devs/screens/UserProfileScreen.dart';
 import 'package:tickets4devs/screens/CartPage.dart';
+import 'package:tickets4devs/screens/WalletScreen.dart';
 
 final GoRouter myRouter = GoRouter(routes: <RouteBase>[
   GoRoute(
     path: '/',
     builder: (BuildContext context, GoRouterState state) {
-      return FirstScreenPage(); // Tela inicial, pode ser alterada para uma tela de boas-vindas
+      return FirstScreenPage();
     },
   ),
   GoRoute(
     path: '/home',
     builder: (BuildContext context, GoRouterState state) {
-      return HomeScreen(); // Tela inicial, pode ser alterada para uma tela de boas-vindas
+      return HomeScreen();
+    },
+  ),
+  GoRoute(
+    path: '/wallet',
+    builder: (BuildContext context, GoRouterState state) {
+      return WalletScreen();
     },
   ),
   GoRoute(
@@ -46,7 +53,7 @@ final GoRouter myRouter = GoRouter(routes: <RouteBase>[
   GoRoute(
     path: '/create_event',
     builder: (BuildContext context, GoRouterState state) {
-      return CreateEventPage(); // Nova rota para criação de evento
+      return CreateEventPage();
     },
   ),
   GoRoute(

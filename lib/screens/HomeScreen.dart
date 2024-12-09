@@ -2,9 +2,12 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tickets4devs/models/Cart.dart';
 import 'package:tickets4devs/models/Event.dart';
+import 'package:tickets4devs/notifiers/UserNotifier.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
 import 'package:http/http.dart' as http;
+import 'package:tickets4devs/widgets/EventCard.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -18,10 +21,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   final int _selectedIndex = 0;
-
   List<Event> events = [];
   String? errorMessage;
   bool isLoading = true;
+  bool isPurchased = false;
+  List<String> purchasedEventIds = [];
 
   @override
   void initState() {
@@ -67,6 +71,23 @@ class _HomeScreenState extends State<HomeScreen> {
         isLoading = false;
       });
     }
+  }
+
+  void _togglePurchase(String eventId) {
+    //print( Provider.of<Cart>(context, listen: false).shopItems);
+    setState(() {
+      if (purchasedEventIds.contains(eventId)) {
+        purchasedEventIds.remove(eventId);
+        //print(purchasedEventIds);
+        Provider.of<Cart>(context, listen: false)
+            .removeItemFromCartById(eventId);
+      } else {
+        purchasedEventIds.add(eventId);
+        //print(purchasedEventIds);
+        Provider.of<Cart>(context, listen: false).addItemFromCartById(eventId);
+      }
+      //print('Eventos comprados: $purchasedEventIds');
+    });
   }
 
   @override
@@ -153,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 44),
               const Text(
-                'Próximos Eventos',
+                'Eventos próximos a você',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -162,19 +183,27 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 20),
               ListView.builder(
+                itemCount: events.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: events.length,
                 itemBuilder: (context, index) {
                   final event = events[index];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: ListTile(
-                      title: Text(event.title!),
-                      subtitle: Text('Data: ${event.date}'),
-                      leading: const Icon(Icons.event),
-                      trailing: const Icon(Icons.arrow_forward_ios),
-                    ),
+                  isPurchased = purchasedEventIds.contains(event.id);
+                  return EventCard(
+                    id: event.id,
+                    date: event.date,
+                    price: event.price,
+                    title: event.title,
+                    localId: event.localId,
+                    descricao: event.description,
+                    isPurchased: isPurchased,
+                    creator: event.criador,
+                    user: Provider.of<UserNotifier>(context, listen: false).userLogado,
+                    togglePurchase: (eventid) {
+                      _togglePurchase(eventid);
+                    },
+                    onEventDeleted: _fetchEvents,
+                    shouldBuy: false,
                   );
                 },
               ),

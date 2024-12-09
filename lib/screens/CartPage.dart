@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tickets4devs/notifiers/UserNotifier.dart';
 import 'package:tickets4devs/notifiers/Cart.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
 
@@ -10,6 +11,9 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double total = 0.0;
     final int _selectedIndex = 0;
+
+    final cartNotifier = Provider.of<Cart>(context);
+    final userNotifier = Provider.of<UserNotifier>(context);
 
     return Scaffold(
       appBar: PreferredSize(
@@ -133,6 +137,7 @@ class CartScreen extends StatelessWidget {
                           onPressed: value.cartItems.isEmpty
                               ? null
                               : () {
+                                  cartNotifier.purchaseTickets(userNotifier.usuarioLogado.id);
                                   showDialog(
                                     context: context,
                                     builder: (context) {
