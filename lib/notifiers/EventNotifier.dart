@@ -48,4 +48,24 @@ class EventNotifier extends ChangeNotifier {
       throw Exception('Erro ao remover evento: $e');
     }
   }
+
+  Future<void> updateEvent(String eventId, Map<String, dynamic> updatedData) async {
+    final String firebaseUrl =
+        'https://tickets4devs2024-default-rtdb.firebaseio.com/events/${Uri.encodeFull(eventId)}.json';
+
+    try {
+      final response = await http.patch(
+        Uri.parse(firebaseUrl),
+        body: jsonEncode(updatedData),
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Erro ao atualizar evento: ${response.statusCode}');
+      }
+
+      notifyListeners();
+    } catch (e) {
+      throw Exception('Erro ao atualizar evento: $e');
+    }
+  }
 }
