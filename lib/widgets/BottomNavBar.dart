@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tickets4devs/notifiers/UserNotifier.dart';
+import 'package:tickets4devs/notifiers/Cart.dart';
 
 class BottomNavBar extends StatelessWidget {
   final int selectedIndex;
@@ -57,7 +58,7 @@ class BottomNavBar extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.logout),
                   color: Theme.of(context).scaffoldBackgroundColor,
-                  onPressed: () { value.deslogar(); context.go('/');}
+                  onPressed: () { value.deslogar(); Provider.of<Cart>(context, listen: false).clearCard(); context.go('/');}
                 ),
               ],
             ),

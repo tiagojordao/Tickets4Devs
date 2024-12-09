@@ -66,6 +66,10 @@ class Cart extends ChangeNotifier {
     return cartItemsId;
   }
 
+  void clearCard(){
+    _cartItems = [];
+  }
+
   void addItemFromCartById(String id){
       final event = _shopItems.firstWhere((item) => item.id == id);
       if (event != null) {

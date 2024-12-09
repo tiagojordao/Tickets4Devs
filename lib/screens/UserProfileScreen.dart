@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
+import 'package:tickets4devs/notifiers/UserNotifier.dart';
+import 'package:tickets4devs/notifiers/Cart.dart';
 
 class UserProfileScreen extends StatelessWidget {
 
@@ -107,6 +110,8 @@ class UserProfileScreen extends StatelessWidget {
                   foregroundColor: Theme.of(context).scaffoldBackgroundColor,
                 ),
                 onPressed: () {
+                  Provider.of<UserNotifier>(context, listen: false).deslogar();
+                  Provider.of<Cart>(context, listen: false).clearCard();
                   context.go('/');
                 },
                 icon: Icon(Icons.logout),
