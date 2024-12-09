@@ -113,7 +113,7 @@ class LoginForm extends StatelessWidget {
                         final password = passwordController.text.trim();
 
                         if (userNotifier.login(email, password)) {
-                          context.go('/search');
+                          context.go('/home');
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
