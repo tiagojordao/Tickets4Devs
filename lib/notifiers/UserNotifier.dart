@@ -10,8 +10,11 @@ class UserNotifier extends ChangeNotifier {
   bool isLoggedIn = false;
   bool isLoading = true;
   String? errorMessage;
+
+
   bool get loadingStatus => isLoading;
   String? get error => errorMessage;
+  User get user => usuarioLogado;
 
   Future<void> fetchUsers() async {
     try {
@@ -129,6 +132,37 @@ class UserNotifier extends ChangeNotifier {
       }
     } catch (e) {
       print('Erro ao tentar excluir o usuário: $e');
+    }
+  }
+
+  void updateUser(User aUser) async {
+
+    final user = _users.firstWhere((user) => user.id == aUser.id);
+
+    final String firebaseUrl =
+          'https://tickets4devs2024-default-rtdb.firebaseio.com/users/${user.id}.json';
+
+    if(user != null) {
+      final response = await http.put(
+        Uri.parse(firebaseUrl),
+        body: jsonEncode({
+          'email': aUser.email ?? aUser.email != null,
+          'name': aUser.name ?? aUser.name != null,
+          'password': aUser.password ?? aUser.password != null,
+        })  
+      );
+    }
+
+    if (usuarioLogado != null) {
+      usuarioLogado = User(
+        id: usuarioLogado!.id,
+        name: aUser.name ?? usuarioLogado!.name,
+        email: aUser.email ?? usuarioLogado!.email,
+        password: aUser.password ?? usuarioLogado!.password,
+      );
+      notifyListeners();
+    } else {
+      throw Exception('Nenhum usuário logado para atualizar.');
     }
   }
 }
