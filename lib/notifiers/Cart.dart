@@ -31,6 +31,7 @@ class Cart extends ChangeNotifier {
                 description: eventData['description'] ?? '',
                 localId: eventData['localId'] ?? '',
                 date: eventData['date'] ?? '',
+                criador: eventData['criador'] ?? '',
                 price: double.tryParse(eventData['price'].toString()) ?? 0.0,
                 totalTickets:
                     int.tryParse(eventData['totalTickets'].toString()) ?? 0,

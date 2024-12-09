@@ -2,6 +2,7 @@ import 'dart:convert'; // Para converter JSON
 import 'package:flutter/material.dart';
 import 'package:tickets4devs/notifiers/Cart.dart';
 import 'package:tickets4devs/models/Event.dart';
+import 'package:tickets4devs/notifiers/UserNotifier.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
 import 'package:tickets4devs/widgets/EventCard.dart';
 import 'package:provider/provider.dart';
@@ -55,6 +56,7 @@ class _EventsAvailableState extends State<EventsAvailable> {
               description: eventData['description'] ?? '',
               localId: eventData['localId'] ?? '',
               date: eventData['date'] ?? '',
+              criador: eventData['criador'] ?? '',
               price: double.tryParse(eventData['price'].toString()) ?? 0.0,
               totalTickets:
                   int.tryParse(eventData['totalTickets'].toString()) ?? 0,
@@ -188,6 +190,8 @@ class _EventsAvailableState extends State<EventsAvailable> {
                               localId: event.localId,
                               descricao: event.description,
                               isPurchased: isPurchased,
+                              creator: event.criador,
+                              user: Provider.of<UserNotifier>(context, listen: false).userLogado,
                               togglePurchase: (eventid) {
                                 _togglePurchase(eventid);
                               },

@@ -10,6 +10,8 @@ class EventCard extends StatefulWidget {
   final String localId;
   final String descricao;
   final bool isPurchased;
+  final String creator;
+  final String user;
   final Function(String) togglePurchase;
   final Function onEventDeleted;
 
@@ -22,6 +24,8 @@ class EventCard extends StatefulWidget {
     required this.localId,
     required this.descricao,
     required this.isPurchased,
+    required this.creator,
+    required this.user,
     required this.togglePurchase,
     required this.onEventDeleted,
   });
@@ -57,6 +61,8 @@ class _EventCardState extends State<EventCard> {
           localId: widget.localId,
           descricao: widget.descricao,
           isPurchased: inCart,
+          creatorId: widget.creator,
+          userId: widget.user,
           togglePurchase: (event) {
             _toggleCartState();
           },

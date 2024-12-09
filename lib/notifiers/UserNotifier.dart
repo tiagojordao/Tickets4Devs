@@ -50,6 +50,8 @@ class UserNotifier extends ChangeNotifier {
 
   get users => _users;
 
+  get userLogado => usuarioLogado.id;
+
   bool login(String email, String password){
     print(_users);
     for (var i = 0; i < _users.length; i++) {

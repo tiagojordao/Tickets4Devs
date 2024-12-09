@@ -11,6 +11,8 @@ class EventDetail extends StatefulWidget {
   final String localId;
   final String descricao;
   bool isPurchased;
+  final String creatorId; // ID do criador do evento
+  final String userId; // ID do usuário logado
   final Function(String) togglePurchase;
   final Function onEventDeleted;
 
@@ -23,6 +25,8 @@ class EventDetail extends StatefulWidget {
     required this.localId,
     required this.descricao,
     required this.isPurchased,
+    required this.creatorId,
+    required this.userId, // Adicionando o parâmetro para o usuário logado
     required this.togglePurchase,
     required this.onEventDeleted,
   });
@@ -146,21 +150,26 @@ class _EventDetailState extends State<EventDetail> {
             ),
             const SizedBox(height: 24.0),
             const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
+            
+            // Verificando se o usuário logado é o criador do evento
+            if (widget.creatorId == widget.userId) ...[
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                  ),
+                  onPressed: () {
+                    _showDeleteConfirmation(context);
+                  },
+                  icon: Icon(Icons.delete),
+                  label: Text('Remover Evento'),
                 ),
-                onPressed: () {
-                  _showDeleteConfirmation(context);
-                },
-                icon: Icon(Icons.delete),
-                label: Text('Remover Evento'),
               ),
-            ),
-            const SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
+            ],
+
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(

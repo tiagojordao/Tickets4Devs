@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class EventNotifier extends ChangeNotifier {
+  
   Future<void> saveEventToDatabase(Map<String, dynamic> eventData) async {
     const String firebaseUrl =
         'https://tickets4devs2024-default-rtdb.firebaseio.com/events.json';
