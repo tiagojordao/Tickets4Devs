@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:tickets4devs/notifiers/Cart.dart';
 import 'package:tickets4devs/notifiers/UserNotifier.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -113,6 +114,7 @@ class LoginForm extends StatelessWidget {
                         final password = passwordController.text.trim();
 
                         if (userNotifier.login(email, password)) {
+                          Provider.of<Cart>(context, listen: false).syncCart(userNotifier.userLogado);
                           context.go('/home');
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
