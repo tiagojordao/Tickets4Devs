@@ -40,6 +40,9 @@ dependencies:
   provider: ^6.1.2
   image_picker: ^0.8.7+3
   carousel_slider: ^5.0.0
+  firebase_core: ^2.19.0 
+  firebase_database: ^10.3.0
+  firebase_storage: ^11.0.0
 
 dev_dependencies:
   flutter_test:

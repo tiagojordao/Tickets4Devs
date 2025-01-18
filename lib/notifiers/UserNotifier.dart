@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tickets4devs/models/User.dart';
 
-class UserNotifier extends ChangeNotifier {
 
-  List<User> _users = []; 
+class UserNotifier extends ChangeNotifier {
+  List<User> _users = [];
   late User usuarioLogado;
   bool isLoggedIn = false;
   bool isLoading = true;
   String? errorMessage;
-
 
   bool get loadingStatus => isLoading;
   String? get error => errorMessage;
@@ -24,20 +23,21 @@ class UserNotifier extends ChangeNotifier {
       final response = await http.get(Uri.parse(firebaseUrl));
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> data = jsonDecode(response.body); 
-          
-         _users = data.entries
-          .where((entry) => entry.value != null)
-          .map((entry) {
-            final userData = entry.value;
-            return User(
-              id: entry.key,
-              email: userData['email'] ?? '',
-              name: userData['name'] ?? '',
-              password: userData['password'] ?? '',
-            );
-          })
-          .toList();
+        final Map<String, dynamic> data = jsonDecode(response.body);
+
+        _users = data.entries
+            .where((entry) => entry.value != null)
+            .map((entry) {
+              final userData = entry.value;
+              return User(
+                id: entry.key,
+                email: userData['email'] ?? '',
+                name: userData['name'] ?? '',
+                password: userData['password'] ?? '',
+                profileImage: userData['profileImage'] ?? '', // Novo campo
+              );
+            })
+            .toList();
 
         isLoading = false;
         notifyListeners();
@@ -55,7 +55,7 @@ class UserNotifier extends ChangeNotifier {
 
   get userLogado => usuarioLogado.id;
 
-  bool login(String email, String password){
+  bool login(String email, String password) {
     print(_users);
     for (var i = 0; i < _users.length; i++) {
       if (email == _users[i].email) {
@@ -66,18 +66,18 @@ class UserNotifier extends ChangeNotifier {
           return true;
         }
       }
-    } 
+    }
     return false;
   }
 
-  void deslogar(){
+  void deslogar() {
     if (isLoggedIn) {
       isLoggedIn = false;
       notifyListeners();
     }
   }
 
-  bool emailValido(String email){
+  bool emailValido(String email) {
     for (var i = 0; i < _users.length; i++) {
       if (_users[i].email == email) {
         return false;
@@ -87,7 +87,7 @@ class UserNotifier extends ChangeNotifier {
   }
 
   Future<void> registerUser(String email, String name, String password) async {
-  try {
+    try {
       const String firebaseUrl =
           'https://tickets4devs2024-default-rtdb.firebaseio.com/users.json';
 
@@ -97,6 +97,7 @@ class UserNotifier extends ChangeNotifier {
           'email': email,
           'name': name,
           'password': password,
+          'profileImage': '', // Inicializa o campo com um valor vazio
         }),
       );
 
@@ -113,9 +114,36 @@ class UserNotifier extends ChangeNotifier {
     }
   }
 
-   Future<void> removeUser(String userId) async {
+ Future<void> updateUserProfileImage(String imageUrl) async {
+  try {
+
+    final String firebaseUrl =
+        'https://tickets4devs2024-default-rtdb.firebaseio.com/users/${usuarioLogado.id}.json';
+
+    final response = await http.put(
+      Uri.parse(firebaseUrl),
+      body: jsonEncode({
+        'email': usuarioLogado.email,
+        'name': usuarioLogado.name,
+        'password': usuarioLogado.password,
+        'profileImage': imageUrl, 
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      usuarioLogado.profileImage = imageUrl;
+
+      notifyListeners();
+    } else {
+      throw Exception('Erro ao atualizar o perfil: ${response.statusCode}');
+    }
+  } catch (e) {
+    print("Erro ao atualizar o perfil: $e");
+  }
+}
+
+  Future<void> removeUser(String userId) async {
     try {
-      // Encontrar o usuário com a chave fornecida
       final user = _users.firstWhere((user) => user.id == userId);
 
       final String firebaseUrl =
@@ -136,29 +164,29 @@ class UserNotifier extends ChangeNotifier {
   }
 
   void updateUser(User aUser) async {
-
     final user = _users.firstWhere((user) => user.id == aUser.id);
 
     final String firebaseUrl =
-          'https://tickets4devs2024-default-rtdb.firebaseio.com/users/${user.id}.json';
+        'https://tickets4devs2024-default-rtdb.firebaseio.com/users/${user.id}.json';
 
-    if(user != null) {
+    if (user != null) {
       final response = await http.put(
         Uri.parse(firebaseUrl),
         body: jsonEncode({
           'email': aUser.email ?? aUser.email != null,
           'name': aUser.name ?? aUser.name != null,
           'password': aUser.password ?? aUser.password != null,
-        })  
+        }),
       );
     }
 
     if (usuarioLogado != null) {
       usuarioLogado = User(
-        id: usuarioLogado!.id,
-        name: aUser.name ?? usuarioLogado!.name,
-        email: aUser.email ?? usuarioLogado!.email,
-        password: aUser.password ?? usuarioLogado!.password,
+        id: usuarioLogado.id,
+        name: aUser.name ?? usuarioLogado.name,
+        email: aUser.email ?? usuarioLogado.email,
+        password: aUser.password ?? usuarioLogado.password,
+        profileImage: usuarioLogado.profileImage, 
       );
       notifyListeners();
     } else {
@@ -166,4 +194,3 @@ class UserNotifier extends ChangeNotifier {
     }
   }
 }
-

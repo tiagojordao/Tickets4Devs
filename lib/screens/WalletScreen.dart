@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tickets4devs/models/Ticket.dart';
-import 'package:tickets4devs/models/UserNotifier.dart';
+import 'package:tickets4devs/notifiers/UserNotifier.dart';
 import 'package:http/http.dart' as http;
 import 'package:tickets4devs/notifiers/WalletNotifier.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';

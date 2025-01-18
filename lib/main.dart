@@ -8,7 +8,7 @@ import 'package:tickets4devs/routes/Routes.dart';
 import 'package:provider/provider.dart';
 import 'package:tickets4devs/notifiers/Cart.dart';
 
-void main() {
+void main(){
   runApp(
     MultiProvider(
       providers: [
