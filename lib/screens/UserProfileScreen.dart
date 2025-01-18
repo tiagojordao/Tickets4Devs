@@ -1,24 +1,58 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tickets4devs/models/UserNotifier.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
 
-class UserProfileScreen extends StatelessWidget {
+import 'package:provider/provider.dart';
 
-  final int _selectedIndex = 0;
+class UserProfileScreen extends StatefulWidget {
+  const UserProfileScreen({super.key});
 
-  final String name;
-  final String email;
+  @override
+  _UserProfileScreenState createState() => _UserProfileScreenState();
+}
 
-  const UserProfileScreen({
-    super.key,
-    required this.name,
-    required this.email,
-  });
+class _UserProfileScreenState extends State<UserProfileScreen> {
+  File? _profileImage;
+  bool _isPickingImage = false; 
+
+  Future<void> _pickImage() async {
+    if (_isPickingImage) return; 
+
+    setState(() {
+      _isPickingImage = true;
+    });
+
+    final picker = ImagePicker();
+    try {
+      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          _profileImage = File(pickedFile.path);
+        });
+
+        // Aqui você pode salvar a imagem no backend ou Firebase Storage
+        // E atualizar a URL da imagem no perfil do usuário.
+      }
+    } catch (e) {
+      print('Erro ao selecionar imagem: $e');
+    } finally {
+      setState(() {
+        _isPickingImage = false; // Libera para novas chamadas
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final userNotifier = Provider.of<UserNotifier>(context);
+    final user = userNotifier.usuarioLogado;
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
@@ -58,13 +92,20 @@ class UserProfileScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: Theme.of(context).primaryColorLight,
-              child: Icon(
-                Icons.person,
-                size: 60,
-                color: Theme.of(context).scaffoldBackgroundColor,
+            GestureDetector(
+              onTap: _pickImage,
+              child: CircleAvatar(
+                radius: 50,
+                backgroundColor: Theme.of(context).primaryColorLight,
+                backgroundImage:
+                    _profileImage != null ? FileImage(_profileImage!) : null,
+                child: _profileImage == null
+                    ? Icon(
+                        Icons.person,
+                        size: 60,
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                      )
+                    : null,
               ),
             ),
             const SizedBox(height: 20),
@@ -75,7 +116,7 @@ class UserProfileScreen extends StatelessWidget {
                   color: Colors.white,
                 ),
                 Text(
-                  ' $name',
+                  ' ${user.name}',
                   style: TextStyle(
                     color: Colors.white,
                   ),
@@ -90,7 +131,7 @@ class UserProfileScreen extends StatelessWidget {
                   color: Colors.white,
                 ),
                 Text(
-                  ' $email',
+                  ' ${user.email}',
                   style: TextStyle(
                     color: Colors.white,
                   ),
@@ -107,7 +148,8 @@ class UserProfileScreen extends StatelessWidget {
                   foregroundColor: Theme.of(context).scaffoldBackgroundColor,
                 ),
                 onPressed: () {
-                  context.go('/');
+                  userNotifier.deslogar();
+                  Navigator.pushReplacementNamed(context, '/');
                 },
                 icon: Icon(Icons.logout),
                 label: Text("Sair da Conta"),
@@ -117,7 +159,7 @@ class UserProfileScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavBar(
-        selectedIndex: _selectedIndex,
+        selectedIndex: 0,
       ),
     );
   }

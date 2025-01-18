@@ -44,10 +44,7 @@ final GoRouter myRouter = GoRouter(routes: <RouteBase>[
   GoRoute(
     path: '/profile',
     builder: (BuildContext context, GoRouterState state) {
-      return UserProfileScreen(
-        name: "Username",
-        email: "userEmail@email.com",
-      );
+      return UserProfileScreen();
     },
   ),
   GoRoute(
