@@ -1,26 +1,34 @@
-// ignore_for_file: file_names, unused_import, no_leading_underscores_for_local_identifiers, prefer_const_constructors, must_be_immutable
-
 import 'package:flutter/material.dart';
-import 'package:tickets4devs/models/Event.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
+import 'package:tickets4devs/notifiers/EventNotifier.dart';
 
 class EventDetail extends StatefulWidget {
-
-  final String date;
-  final double price;
-  final String title;
-  final String localId;
+  String eventId;
+  String date;
+  double price;
+  String title;
+  String localId;
+  String descricao;
   bool isPurchased;
+  final String creatorId; // ID do criador do evento
+  final String userId; // ID do usuário logado
   final Function(String) togglePurchase;
-  
+  final Function onEventDeleted;
+
   EventDetail({
-      super.key,
-      required this.date,
-      required this.price,
-      required this.title,
-      required this.localId,
-      required this.isPurchased,
-      required this.togglePurchase,
+    super.key,
+    required this.eventId,
+    required this.date,
+    required this.price,
+    required this.title,
+    required this.localId,
+    required this.descricao,
+    required this.isPurchased,
+    required this.creatorId,
+    required this.userId, 
+    required this.togglePurchase,
+    required this.onEventDeleted,
   });
 
   @override
@@ -28,13 +36,55 @@ class EventDetail extends StatefulWidget {
 }
 
 class _EventDetailState extends State<EventDetail> {
-
   final int _selectedIndex = 0;
+  late EventNotifier _userNotifier;
+
+  @override
+  void initState() {
+    super.initState();
+    _userNotifier = EventNotifier();
+  }
 
   void _togglePurchase() {
     setState(() {
       widget.isPurchased = !widget.isPurchased;
     });
+  }
+
+  void _showDeleteConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirmar remoção'),
+          content: const Text('Tem certeza de que deseja remover este evento?'),
+          actions: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).primaryColor,
+                foregroundColor: Theme.of(context).scaffoldBackgroundColor,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancelar'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await _userNotifier.deleteEvent(widget.eventId);
+                widget.onEventDeleted();
+              },
+              child: Text('Remover'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -47,12 +97,12 @@ class _EventDetailState extends State<EventDetail> {
           children: [
             AppBar(
               title: Text(
-                  widget.title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
+                widget.title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
                 ),
+              ),
               elevation: 0,
             ),
           ],
@@ -90,17 +140,69 @@ class _EventDetailState extends State<EventDetail> {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             Text(
-              "Sem descrição!",
+              widget.descricao,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 24.0),
             Text(
-                  'Preço: R\$${widget.price.toStringAsFixed(2)}',
-                  style: const TextStyle(fontSize: 20.0),
-                ),
+              'Preço: R\$${widget.price.toStringAsFixed(2)}',
+              style: const TextStyle(fontSize: 20.0),
+            ),
             const SizedBox(height: 24.0),
-            const SizedBox(height: 8.0),
             const Spacer(),
+            
+            // Verificando se o usuário logado é o criador do evento
+            if (widget.creatorId == widget.userId) ...[
+              SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                ),
+                onPressed: () async {
+                final updatedEvent = await GoRouter.of(context).push(
+                  '/edit-event',
+                  extra: {
+                    'eventId': widget.eventId,
+                    'date': widget.date,
+                    'price': widget.price,
+                    'title': widget.title,
+                    'localId': widget.localId,
+                    'descricao': widget.descricao,
+                  },
+                );
+
+                if (updatedEvent != null && updatedEvent is Map<String, dynamic>) {
+                setState(() {
+                  widget.title = updatedEvent['title'];
+                  widget.date = updatedEvent['date'];
+                  widget.price = updatedEvent['price'];
+                  widget.localId = updatedEvent['localId'];
+                  widget.descricao = updatedEvent['descricao'];
+                });
+              }
+              },
+                icon: Icon(Icons.edit),
+                label: Text('Editar Evento'),
+              ),
+            ),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                  ),
+                  onPressed: () {
+                    _showDeleteConfirmation(context);
+                  },
+                  icon: Icon(Icons.delete),
+                  label: Text('Remover Evento'),
+                ),
+              ),
+              const SizedBox(height: 16.0),
+            ],
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(

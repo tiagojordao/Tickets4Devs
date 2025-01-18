@@ -38,7 +38,11 @@ dependencies:
   go_router: ^14.3.0
   http: ^1.2.2
   provider: ^6.1.2
+<<<<<<< HEAD
   image_picker: ^0.8.7+3
+=======
+  carousel_slider: ^5.0.0
+>>>>>>> bf6df28518e66e31fb9c241a3cd8d886d34ff8b8
 
 dev_dependencies:
   flutter_test:

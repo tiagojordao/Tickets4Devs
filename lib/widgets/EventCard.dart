@@ -8,8 +8,13 @@ class EventCard extends StatefulWidget {
   final double price;
   final String title;
   final String localId;
+  final String descricao;
   final bool isPurchased;
+  final String creator;
+  final String user;
   final Function(String) togglePurchase;
+  final Function onEventDeleted;
+  final bool? shouldBuy;
 
   const EventCard({
     super.key,
@@ -18,8 +23,13 @@ class EventCard extends StatefulWidget {
     required this.price,
     required this.title,
     required this.localId,
+    required this.descricao,
     required this.isPurchased,
+    required this.creator,
+    required this.user,
     required this.togglePurchase,
+    required this.onEventDeleted,
+    this.shouldBuy = true,
   });
 
   @override
@@ -46,13 +56,20 @@ class _EventCardState extends State<EventCard> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => EventDetail(
+          eventId: widget.id,
           date: widget.date,
           price: widget.price,
           title: widget.title,
           localId: widget.localId,
+          descricao: widget.descricao,
           isPurchased: inCart,
+          creatorId: widget.creator,
+          userId: widget.user,
           togglePurchase: (event) {
             _toggleCartState();
+          },
+          onEventDeleted: () {
+            widget.onEventDeleted();
           },
         ),
       ),
@@ -139,7 +156,7 @@ class _EventCardState extends State<EventCard> {
                     ),
                     color: Theme.of(context).primaryColor,
                   ),
-                  child: ElevatedButton.icon(
+                  child: widget.shouldBuy == true ? ElevatedButton.icon(
                     onPressed: _toggleCartState,
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.zero,
@@ -159,7 +176,7 @@ class _EventCardState extends State<EventCard> {
                           ? Icons.remove_shopping_cart
                           : Icons.add_shopping_cart,
                     ),
-                  ),
+                  ) : null,
                 ),
               ],
             ),

@@ -2,19 +2,34 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tickets4devs/screens/EditEvent.dart';
 import 'package:tickets4devs/screens/EventsAvailable.dart';
 import 'package:tickets4devs/screens/FirstScreen.dart';
+import 'package:tickets4devs/screens/HomeScreen.dart';
 import 'package:tickets4devs/screens/LoginScreen.dart';
 import 'package:tickets4devs/screens/CreateEventPage.dart';
 import 'package:tickets4devs/screens/SignUpScreen.dart';
 import 'package:tickets4devs/screens/UserProfileScreen.dart';
 import 'package:tickets4devs/screens/CartPage.dart';
+import 'package:tickets4devs/screens/WalletScreen.dart';
 
 final GoRouter myRouter = GoRouter(routes: <RouteBase>[
   GoRoute(
     path: '/',
     builder: (BuildContext context, GoRouterState state) {
-      return FirstScreenPage(); // Tela inicial, pode ser alterada para uma tela de boas-vindas
+      return FirstScreenPage();
+    },
+  ),
+  GoRoute(
+    path: '/home',
+    builder: (BuildContext context, GoRouterState state) {
+      return HomeScreen();
+    },
+  ),
+  GoRoute(
+    path: '/wallet',
+    builder: (BuildContext context, GoRouterState state) {
+      return WalletScreen();
     },
   ),
   GoRoute(
@@ -38,7 +53,7 @@ final GoRouter myRouter = GoRouter(routes: <RouteBase>[
   GoRoute(
     path: '/create_event',
     builder: (BuildContext context, GoRouterState state) {
-      return CreateEventPage(); // Nova rota para criação de evento
+      return CreateEventPage();
     },
   ),
   GoRoute(
@@ -53,4 +68,18 @@ final GoRouter myRouter = GoRouter(routes: <RouteBase>[
       return CartScreen();
     },
   ),
+  GoRoute(
+      path: '/edit-event',
+      builder: (context, state) {
+        final args = state.extra as Map<String, dynamic>;
+        return EditEvent(
+          eventId: args['eventId'],
+          date: args['date'],
+          price: args['price'],
+          title: args['title'],
+          localId: args['localId'],
+          descricao: args['descricao'],
+        );
+      },
+    ),
 ]);
