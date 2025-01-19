@@ -66,124 +66,141 @@ File? _convertBase64ToFile(String base64String) {
 }
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<UserNotifier>(
-      builder: (context, userNotifier, child) {
-        var user = userNotifier.usuarioLogado;
+Widget build(BuildContext context) {
+  return Consumer<UserNotifier>(
+    builder: (context, userNotifier, child) {
+      var user = userNotifier.usuarioLogado;
 
-        String? profileImageBase64 = user.profileImage;
+      String? profileImageBase64 = user.profileImage;
 
-        File? profileImage;
-        if (profileImageBase64 != null && profileImageBase64.isNotEmpty) {
-          profileImage = _convertBase64ToFile(profileImageBase64);
-        }
+      File? profileImage;
+      if (profileImageBase64 != null && profileImageBase64.isNotEmpty) {
+        profileImage = _convertBase64ToFile(profileImageBase64);
+      }
 
-        return Scaffold(
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(60.0),
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: const BorderRadius.vertical(
-                      bottom: Radius.circular(30.0),
-                    ),
-                  ),
-                  child: AppBar(
-                    title: Center(
-                      child: Text(
-                        'Perfil do Usuário',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                    backgroundColor: Colors.transparent,
-                    elevation: 0,
-                  ),
+      return Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(80.0),
+          child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color.fromARGB(255, 151, 180, 7), Color(0xFFdbfc3b)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(30.0),
+              ),
+            ),
+            child: AppBar(
+              title: const Text(
+                'Perfil do Usuário',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
                 ),
-                const Divider(
-                  height: 1,
-                  thickness: 1,
-                  color: Colors.black,
-                ),
-              ],
+              ),
+              centerTitle: true,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
             ),
           ),
-          body: Padding(
+        ),
+        body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               GestureDetector(
                 onTap: _pickImage,
                 child: CircleAvatar(
-                  radius: 50,
+                  radius: 60,
                   backgroundColor: Theme.of(context).primaryColorLight,
-                  backgroundImage: profileImage != null
-                      ? FileImage(profileImage)
-                      : null,
+                  backgroundImage:
+                      profileImage != null ? FileImage(profileImage) : null,
                   child: profileImage == null
-                      ? Icon(
+                      ? const Icon(
                           Icons.person,
                           size: 60,
-                          color: Theme.of(context).scaffoldBackgroundColor,
+                          color: Colors.grey,
                         )
                       : null,
                 ),
               ),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.person,
-                      color: Colors.white,
-                    ),
-                    Text(
-                      ' ${user.name}',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
+              const SizedBox(height: 10),
+              const Text(
+                "Toque para alterar a foto",
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+              const SizedBox(height: 20),
+              Card(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.email,
-                      color: Colors.white,
-                    ),
-                    Text(
-                      ' ${user.email}',
-                      style: TextStyle(
-                        color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.person, color: Color(0xFFAECA1F)),
+                          const SizedBox(width: 10),
+                          Text(
+                            user.name,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      foregroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    ),
-                    onPressed: () {
-                      userNotifier.deslogar();
-                      Navigator.pushReplacementNamed(context, '/');
-                    },
-                    icon: Icon(Icons.logout),
-                    label: Text("Sair da Conta"),
+                      const SizedBox(height: 15),
+                      Row(
+                        children: [
+                          const Icon(Icons.email, color: Color(0xFFAECA1F)),
+                          const SizedBox(width: 10),
+                          Text(
+                            user.email,
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+              const Spacer(),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    backgroundColor: Theme.of(context).primaryColor,
+                    shadowColor: Color(0xFFdbfc3b),
+                    elevation: 8,
+                  ),
+                  onPressed: () {
+                    userNotifier.deslogar();
+                    Navigator.pushReplacementNamed(context, '/');
+                  },
+                  icon: const Icon(Icons.logout, size: 24),
+                  label: const Text(
+                    "Sair da Conta",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              ),
+            ],
           ),
+        ),
            bottomNavigationBar: BottomNavBar(
             selectedIndex: 0,
           ),
