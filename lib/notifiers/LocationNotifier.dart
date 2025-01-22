@@ -19,14 +19,23 @@ class LocationNotifier extends ChangeNotifier {
   Future<String?> getCityFromCoordinates(
       double latitude, double longitude) async {
     try {
-      // Obtém o endereço completo da latitude e longitude
+      print(
+          "Coordenadas city: $latitude, $longitude"); // Já está imprimindo, mas é bom confirmar
       List<Placemark> placemarks =
           await placemarkFromCoordinates(latitude, longitude);
+      print(
+          "Placemark retornado: $placemarks"); // Verifique o conteúdo retornado
 
-      // Verifica se obteve algum resultado
       if (placemarks.isNotEmpty) {
         Placemark placemark = placemarks.first;
-        return placemark.locality; // Retorna a cidade
+        String? city = placemark.locality; // Tenta obter a cidade de "locality"
+
+        if (city?.isEmpty ?? true) {
+          city =
+              placemark.subAdministrativeArea ?? placemark.administrativeArea;
+        }
+
+        return city; // Retorna a cidade ou o que for encontrado
       } else {
         return null; // Caso não encontre a cidade
       }
@@ -38,36 +47,40 @@ class LocationNotifier extends ChangeNotifier {
 
   // Método para atualizar a localização
   Future<void> fetchLocation() async {
-    if (_isLoading)
-      return; // Impede chamadas repetidas se já estiver carregando
+    if (_isLoading) return;
 
     try {
       _isLoading = true;
-      notifyListeners(); // Notifica para atualizar a UI e mostrar o carregamento
+      notifyListeners();
 
-      // A lógica para obter permissão e localização vai aqui
       bool permissionGranted = await _checkPermissions();
       if (permissionGranted) {
         final location = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high,
         );
         _currentPosition = location;
-        currentCity = await getCityFromCoordinates(
-            location.latitude, location.longitude); // Obtém a cidade
-        print("currentcity $currentCity");
-        _errorMessage = null; // Limpa qualquer mensagem de erro
+        String? newCity =
+            await getCityFromCoordinates(location.latitude, location.longitude);
+
+        // Imprima as coordenadas e a cidade atual para diagnóstico
+        print("Coordenadas: ${location.latitude}, ${location.longitude}");
+        print("Cidade Atual: $newCity");
+
+        // Atualize a cidade apenas se ela for diferente da atual
+        if (newCity != currentCity) {
+          currentCity = newCity;
+        }
+        _errorMessage = null;
       } else {
-        _errorMessage =
-            "Permissão negada"; // Define erro caso a permissão seja negada
+        _errorMessage = "Permissão negada";
         _currentPosition = null;
       }
     } catch (e) {
-      _errorMessage =
-          "Erro ao obter localização: $e"; // Define o erro caso ocorra alguma falha
+      _errorMessage = "Erro ao obter localização: $e";
       _currentPosition = null;
     } finally {
-      _isLoading = false; // Marca como não carregando
-      notifyListeners(); // Notifica para atualizar a UI
+      _isLoading = false;
+      notifyListeners();
     }
   }
 

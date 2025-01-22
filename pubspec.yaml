@@ -39,13 +39,13 @@ dependencies:
   go_router: ^14.3.0
   http: ^1.2.2
   provider: ^6.1.2
-  image_picker: ^0.8.7+3
+  image_picker: ^1.1.2
   carousel_slider: ^5.0.0
   sqflite: ^2.2.0
   path: ^1.8.0
-  geolocator: ^9.0.0
-  firebase_core: ^2.16.0
-  firebase_messaging: ^14.6.2
+  geolocator: ^13.0.2
+  firebase_core: ^3.10.1
+  firebase_messaging: ^15.2.1
   firebase_admin: ^0.3.0
   geocoding: ^3.0.0
   mobile_scanner: ^6.0.3
@@ -63,7 +63,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

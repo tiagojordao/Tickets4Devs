@@ -120,9 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           if (parts.length > 1) {
             final eventCity = parts[1].trim();
-            print("oi $eventCity");
-            return eventCity ==
-                currentLocation;
+            return eventCity == currentLocation;
           }
 
           return false;
@@ -204,9 +202,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     }).toList(),
                   ),
                   const SizedBox(height: 44),
-                  const Text(
-                    'Eventos próximos a você',
-                    style: TextStyle(
+                  Text(
+                    currentLocation != null
+                        ? 'Eventos próximos a você em $currentLocation'
+                        : 'Eventos próximos a você',
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
