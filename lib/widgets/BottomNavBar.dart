@@ -44,25 +44,6 @@ class BottomNavBar extends StatelessWidget {
                   onPressed: () => context.go('/cart'),
                 ),
                 IconButton(
-                  icon: Icon(Icons.person),
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  onPressed: () {
-                    context.go('/profile');
-                  }
-                ),
-                IconButton(
-                  icon: Icon(Icons.wallet_sharp),
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  onPressed: () {
-                    context.go('/wallet');
-                  }
-                ),
-                IconButton(
-                  icon: Icon(Icons.add),
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  onPressed: () => context.go('/create_event'),
-                ),
-                IconButton(
                   icon: Icon(Icons.logout),
                   color: Theme.of(context).scaffoldBackgroundColor,
                   onPressed: () { value.deslogar(); Provider.of<Cart>(context, listen: false).clearCard(); context.go('/');}

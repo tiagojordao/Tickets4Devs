@@ -8,6 +8,7 @@ import 'package:tickets4devs/screens/FirstScreen.dart';
 import 'package:tickets4devs/screens/HomeScreen.dart';
 import 'package:tickets4devs/screens/LoginScreen.dart';
 import 'package:tickets4devs/screens/CreateEventPage.dart';
+import 'package:tickets4devs/screens/QRCodeScannerScreen.dart';
 import 'package:tickets4devs/screens/SignUpScreen.dart';
 import 'package:tickets4devs/screens/UserProfileScreen.dart';
 import 'package:tickets4devs/screens/CartPage.dart';
@@ -81,5 +82,11 @@ final GoRouter myRouter = GoRouter(routes: <RouteBase>[
           descricao: args['descricao'],
         );
       },
+    ),
+    GoRoute(
+      path: '/qrCodeScanner',
+      builder: (BuildContext context, GoRouterState state) {
+        return QRCodeScannerScreen();
+      }
     ),
 ]);

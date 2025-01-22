@@ -2,11 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tickets4devs/models/User.dart';
 import 'package:tickets4devs/notifiers/UserNotifier.dart';
 import 'package:provider/provider.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
-import 'package:tickets4devs/notifiers/UserNotifier.dart';
-import 'package:tickets4devs/notifiers/Cart.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
@@ -84,13 +83,9 @@ Widget build(BuildContext context) {
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80.0),
           child: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color.fromARGB(255, 151, 180, 7), Color(0xFFdbfc3b)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.vertical(
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: const BorderRadius.vertical(
                 bottom: Radius.circular(30.0),
               ),
             ),
@@ -193,10 +188,10 @@ Widget build(BuildContext context) {
                     userNotifier.deslogar();
                     Navigator.pushReplacementNamed(context, '/');
                   },
-                  icon: const Icon(Icons.logout, size: 24),
+                  icon: const Icon(Icons.logout, size: 24, color: Colors.black,),
                   label: const Text(
                     "Sair da Conta",
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 16, color: Colors.black),
                   ),
                 ),
               ),
