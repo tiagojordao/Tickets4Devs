@@ -4,13 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:tickets4devs/db/FirebaseNotificationService.dart';
 import 'package:tickets4devs/notifiers/UserNotifier.dart';
 import 'package:tickets4devs/notifiers/WalletNotifier.dart';
+import 'package:tickets4devs/notifiers/LocationNotifier.dart';
 import 'package:tickets4devs/notifiers/Cart.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:tickets4devs/routes/Routes.dart';
 
-
 void main() async {
-  
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
@@ -21,6 +20,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => Cart()),
         ChangeNotifierProvider(create: (context) => UserNotifier()),
         ChangeNotifierProvider(create: (context) => WalletNotifier()),
+        ChangeNotifierProvider(create: (context) => LocationNotifier()),
       ],
       child: MyApp(),
     ),
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
     FirebaseNotificationService().initialize(context);
 
     return MaterialApp.router(
-      routerConfig: myRouter, 
+      routerConfig: myRouter,
       title: 'Tickets4Devs',
       theme: ThemeData(
         primaryColor: Color(0xFFdbfc3b),
