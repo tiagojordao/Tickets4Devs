@@ -16,11 +16,13 @@
 *.iws
 .idea/
 
+
 # Visual Studio Code related
 .classpath
 .project
 .settings/
 .vscode/*
+.vscode/
 
 # Flutter repo-specific
 /bin/cache/
@@ -101,6 +103,8 @@ unlinked_spec.ds
 **/ios/Flutter/flutter_export_environment.sh
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
+ios/Podfile
+macos/Podfile
 
 # macOS
 **/Flutter/ephemeral/
