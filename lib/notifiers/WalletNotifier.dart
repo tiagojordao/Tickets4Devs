@@ -6,7 +6,15 @@ import 'package:http/http.dart' as http;
 
 class WalletNotifier extends ChangeNotifier {
 
-  List<Ticket> _tickets = [];
+  List<Ticket> _tickets = [
+    Ticket(
+      id: '1',
+      userId: '1',
+      eventId: 'Apresentação',
+      purchaseDate: DateTime.now(),
+      price: 10,
+    )
+  ];
   get tickets => _tickets;
 
   Future<void> fetchUsers() async {

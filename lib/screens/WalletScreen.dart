@@ -7,6 +7,7 @@ import 'package:tickets4devs/models/Ticket.dart';
 import 'package:tickets4devs/notifiers/UserNotifier.dart';
 import 'package:http/http.dart' as http;
 import 'package:tickets4devs/notifiers/WalletNotifier.dart';
+import 'package:tickets4devs/screens/UserTicketDetail.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
 
 class WalletScreen extends StatefulWidget {
@@ -88,12 +89,23 @@ class _WalletScreenState extends State<WalletScreen> {
               return Card(
                 margin: const EdgeInsets.all(8.0),
                 child: ListTile(
-                  leading: const Icon(Icons.airplane_ticket_sharp),
-                  title: Text('Evento: ${ticket.eventId}'),
+                  title: Text('${ticket.eventId}', style: TextStyle(fontWeight: FontWeight.w500),),
                   subtitle: Text(
-                    'Comprado em: ${ticket.purchaseDate.toLocal()} \nPreço: R\$ ${ticket.price.toStringAsFixed(2)}',
+                    'Comprado em: ${ticket.purchaseDate.toLocal().toString().split(' ')[0]} \nPreço: R\$ ${ticket.price.toStringAsFixed(2)}',
                   ),
                   isThreeLine: true,
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => 
+                          UserTicketDetail(
+                            titulo: ticket.eventId,
+                            dataCompra: ticket.purchaseDate.toLocal().toString().split(' ')[0],
+                            preco: ticket.price
+                          ),
+                      )
+                    );
+                  },
                 ),
               );
             },

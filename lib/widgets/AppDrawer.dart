@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tickets4devs/notifiers/UserNotifier.dart';
+import 'package:tickets4devs/screens/CreateEventPage.dart';
 import 'package:tickets4devs/screens/QRCodeScannerScreen.dart';
+import 'package:tickets4devs/screens/UserProfileScreen.dart';
+import 'package:tickets4devs/screens/WalletScreen.dart';
 
 class AppDrawer extends StatelessWidget {
 
@@ -62,7 +65,10 @@ class AppDrawer extends StatelessWidget {
                   leading: Icon(Icons.person),
                   title: Text('Perfil'),
                   onTap: () {
-                    context.go('/profile');
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => UserProfileScreen(),)
+                    );
+                    // context.go('/qrCodeScanner');
                   },
                 ),
                 ListTile(
@@ -79,14 +85,20 @@ class AppDrawer extends StatelessWidget {
                   leading: Icon(Icons.wallet),
                   title: Text('Carteira'),
                   onTap: () {
-                    context.go('/wallet');
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => WalletScreen(),)
+                    );
+                    // context.go('/qrCodeScanner');
                   },
                 ),
                 ListTile(
                   leading: Icon(Icons.add),
                   title: Text('Criar Evento'),
                   onTap: () {
-                    context.go('/create_event');
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => CreateEventPage(),)
+                    );
+                    // context.go('/qrCodeScanner');
                   },
                 ),
               ],

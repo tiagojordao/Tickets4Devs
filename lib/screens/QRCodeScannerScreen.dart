@@ -17,7 +17,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with WidgetsB
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(
+          title: const Text(
             'Validar Ingresso',
             style: TextStyle(fontWeight: FontWeight.w500),  
           ),
@@ -27,21 +27,41 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with WidgetsB
           detectionSpeed: DetectionSpeed.noDuplicates,
         ),
         onDetect: (capture) {
-          final List<Barcode> barcodes = capture.barcodes;
-          final Uint8List? image = capture.image; 
-
-          if(image != null) {
+          final String? code = capture.barcodes.first.rawValue;
+          if(code != null) {
             showDialog(
               context: context,
               builder: (context) {
-                return AlertDialog(
-                  title: const Text('Ingresso validado!'),
-                  content: Image(image: MemoryImage(image)),
+                return const AlertDialog(
+                  title: Text(
+                    'Ingresso validado com sucesso',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  backgroundColor: Colors.green,
+                );
+              }
+            );
+          } else {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return const AlertDialog(
+                  title: Text(
+                    'Ingresso inválido',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  backgroundColor: Colors.red,
                 );
               }
             );
           }
-        },
+        }
       ),
     );
   }
