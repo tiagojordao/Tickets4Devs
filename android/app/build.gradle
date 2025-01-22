@@ -22,10 +22,9 @@ android {
     defaultConfig {
         applicationId = "com.example.tickets4devs"
         minSdk = 21
-        versionName = "1.0.0"
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        targetSdk = 33
+        versionCode = 1
+        versionName = "1.0.1"
     }
 
     buildTypes {
