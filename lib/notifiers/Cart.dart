@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:tickets4devs/db/CartDB.dart';
 import 'package:tickets4devs/models/Event.dart';
 import 'package:tickets4devs/models/Ticket.dart';
 
 class Cart extends ChangeNotifier {
+  CartDB cartDB = CartDB();
   List<Event> _shopItems = []; 
   bool isLoading = true;
   String? errorMessage;
@@ -71,20 +73,21 @@ class Cart extends ChangeNotifier {
     _cartItems = [];
   }
 
-  void addItemFromCartById(String id){
-      final event = _shopItems.firstWhere((item) => item.id == id);
-      if (event != null) {
-        _cartItems.add(event);
-        print("Adicionado ao carrinho: ${event.title}");
-        notifyListeners();
-      }
+   Future<void> addItemFromCartById(String userId, String eventId) async {
+    final event = _shopItems.firstWhere((item) => item.id == eventId);
+    if (event != null) {
+      _cartItems.add(event);
+      await cartDB.insertItem(userId, eventId);
+      notifyListeners();
+    }
   }
 
-  void removeItemFromCartById(String id){
-      final index = _cartItems.indexWhere((item) => item.id == id);
+  void removeItemFromCartById(String userId, String eventId) async{
+      final index = _cartItems.indexWhere((item) => item.id == eventId);
       if (index != -1) {
         print("Removido do carrinho: ${_cartItems[index].title}");
         _cartItems.removeAt(index);
+        await cartDB.removeItem(userId, eventId);
         notifyListeners();
       }
   }
@@ -131,4 +134,21 @@ class Cart extends ChangeNotifier {
       throw Exception('Erro ao comprar tickets: $e');
     }
   }
+
+  Future<void> syncCart(String userId) async {
+    await fetchEvents();
+    final cartEventIds = await cartDB.getUserCart(userId);
+
+    for (final eventId in cartEventIds) {
+        try {
+            final event = _shopItems.firstWhere((item) => item.id == eventId);
+            if (event != null && !_cartItems.contains(event)) {
+                _cartItems.add(event);
+            }
+        } catch (e) {
+            print("Evento com ID $eventId não encontrado: $e");
+        }
+    }
+    notifyListeners();
+}
 }

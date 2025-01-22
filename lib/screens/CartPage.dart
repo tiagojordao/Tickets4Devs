@@ -81,7 +81,7 @@ class CartScreen extends StatelessWidget {
                                 color: Color.fromRGBO(162, 194, 73, 1)),
                             onPressed: () {
                               value.removeItemFromCartById(
-                                  value.cartItems[index].id);
+                                  userNotifier.usuarioLogado.id, value.cartItems[index].id);
                             },
                           ),
                         ),

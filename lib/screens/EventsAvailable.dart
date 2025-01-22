@@ -82,11 +82,13 @@ class _EventsAvailableState extends State<EventsAvailable> {
         purchasedEventIds.remove(eventId);
         //print(purchasedEventIds);
         Provider.of<Cart>(context, listen: false)
-            .removeItemFromCartById(eventId);
+            .removeItemFromCartById(Provider.of<UserNotifier>(context, listen: false).userLogado, eventId);
       } else {
         purchasedEventIds.add(eventId);
         //print(purchasedEventIds);
-        Provider.of<Cart>(context, listen: false).addItemFromCartById(eventId);
+        String usuarioid = Provider.of<UserNotifier>(context, listen: false).userLogado;
+        print(usuarioid);
+        Provider.of<Cart>(context, listen: false).addItemFromCartById(usuarioid, eventId);
       }
       //print('Eventos comprados: $purchasedEventIds');
     });

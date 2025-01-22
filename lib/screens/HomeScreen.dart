@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tickets4devs/models/Cart.dart';
+import 'package:tickets4devs/notifiers/Cart.dart';
 import 'package:tickets4devs/models/Event.dart';
 import 'package:tickets4devs/notifiers/UserNotifier.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
@@ -80,11 +80,11 @@ class _HomeScreenState extends State<HomeScreen> {
         purchasedEventIds.remove(eventId);
         //print(purchasedEventIds);
         Provider.of<Cart>(context, listen: false)
-            .removeItemFromCartById(eventId);
+            .removeItemFromCartById(Provider.of<UserNotifier>(context, listen: false).userLogado, eventId);
       } else {
         purchasedEventIds.add(eventId);
         //print(purchasedEventIds);
-        Provider.of<Cart>(context, listen: false).addItemFromCartById(eventId);
+        Provider.of<Cart>(context, listen: false).addItemFromCartById(Provider.of<UserNotifier>(context, listen: false).userLogado, eventId);
       }
       //print('Eventos comprados: $purchasedEventIds');
     });

@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "822438081114",
+    "firebase_url": "https://tickets4devs2024-default-rtdb.firebaseio.com",
+    "project_id": "tickets4devs2024",
+    "storage_bucket": "tickets4devs2024.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:822438081114:android:39e435c60e5e250f545e63",
+        "android_client_info": {
+          "package_name": "com.example.tickets4devs"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvD6bvl-utzYAVGHkiZULlGjTO8LIZWlo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
