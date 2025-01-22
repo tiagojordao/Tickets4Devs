@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tickets4devs/notifiers/Cart.dart';
 import 'package:tickets4devs/models/Event.dart';
 import 'package:tickets4devs/notifiers/UserNotifier.dart';
+import 'package:tickets4devs/widgets/AppDrawer.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
 import 'package:tickets4devs/widgets/EventCard.dart';
 import 'package:provider/provider.dart';
@@ -142,6 +143,7 @@ class _EventsAvailableState extends State<EventsAvailable> {
           ],
         ),
       ),
+      drawer: AppDrawer(),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : errorMessage != null
