@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tickets4devs/models/User.dart';
-
 
 class UserNotifier extends ChangeNotifier {
   List<User> _users = [];
@@ -55,13 +55,30 @@ class UserNotifier extends ChangeNotifier {
 
   get userLogado => usuarioLogado.id;
 
+  Future<void> saveLoginToSharedPreferences(String email, String password) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('email', email);
+    await prefs.setString('password', password);
+  }
+
   bool login(String email, String password) {
-    print(_users);
+
+    print('Email: $email');
+    print('Password: $password');
+    print('Users: $_users');
+
     for (var i = 0; i < _users.length; i++) {
       if (email == _users[i].email) {
         if (password == _users[i].password) {
           isLoggedIn = true;
           usuarioLogado = _users[i];
+
+          print('User1: $usuarioLogado');
+
+          saveLoginToSharedPreferences(_users[i].email, _users[i].password);
+
+          print('User2: $usuarioLogado');
+
           notifyListeners();
           return true;
         }
@@ -70,8 +87,10 @@ class UserNotifier extends ChangeNotifier {
     return false;
   }
 
-  void deslogar() {
+  Future<void> deslogar() async {
     if (isLoggedIn) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
       isLoggedIn = false;
       notifyListeners();
     }

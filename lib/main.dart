@@ -13,7 +13,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  // Passa o contexto do root do app para o serviço de notificações
   runApp(
     MultiProvider(
       providers: [
@@ -42,6 +41,23 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           backgroundColor: Color(0xFFdbfc3b),
           foregroundColor: Color(0xFF030303),
+        ),
+        textTheme: TextTheme(
+          bodySmall: TextStyle(fontSize: 16.0),
+          bodyMedium: TextStyle(fontSize: 20.0),
+          bodyLarge: TextStyle(fontSize: 24.0),
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Color(0xFFDBFC3B),
+          foregroundColor: Color(0xFF030303),
+        ),
+        buttonTheme: ButtonThemeData(
+          buttonColor: Color(0xFFdbfc3b),
+          textTheme: ButtonTextTheme.primary,
+        ),
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: Color(0xFFdbfc3b),
+          secondary: Color(0xFF030303),
         ),
       ),
     );

@@ -21,6 +21,7 @@ version: 1.0.0+1
 environment:
   sdk: ^3.5.3
 
+
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -47,6 +48,11 @@ dependencies:
   firebase_messaging: ^14.6.2
   firebase_admin: ^0.3.0
   geocoding: ^3.0.0
+  mobile_scanner: ^6.0.3
+  pretty_qr_code: ^3.3.0
+  shared_preferences: ^2.3.5
+  flutter_native_splash: ^2.4.4
+  flutter_launcher_icons: ^0.14.3
 
 dev_dependencies:
   flutter_test:
@@ -102,3 +108,17 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+flutter_native_splash:
+  color: "#333333"
+  image: lib/assets/icon2.png
+  android: true
+  ios: true
+
+flutter_icons:
+  image_path: lib/assets/icon.png
+  ios: true
+  remove_alpha_ios: true
+  android: "launcher_icon"
+  adaptive_icon_background: "#333333"
+  adaptive_icon_foreground: lib/assets/icon.png

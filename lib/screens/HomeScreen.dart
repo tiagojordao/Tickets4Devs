@@ -6,6 +6,7 @@ import 'package:tickets4devs/notifiers/Cart.dart';
 import 'package:tickets4devs/models/Event.dart';
 import 'package:tickets4devs/notifiers/UserNotifier.dart';
 import 'package:tickets4devs/notifiers/LocationNotifier.dart';
+import 'package:tickets4devs/widgets/AppDrawer.dart';
 import 'package:tickets4devs/widgets/BottomNavBar.dart';
 import 'package:http/http.dart' as http;
 import 'package:tickets4devs/widgets/EventCard.dart';
@@ -24,6 +25,11 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = true;
   bool isPurchased = false;
   List<String> purchasedEventIds = [];
+  final List<String> carouselImages = [
+    'https://media.istockphoto.com/id/1279483477/pt/foto/we-are-going-to-party-as-if-theres-no-tomorrow.jpg?s=612x612&w=0&k=20&c=rmnD3Ag-NN3CcvxWy3I92ZY2sz5gA1vDwE0vJCvhscE=',
+    'https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg?cs=srgb&dl=pexels-wendywei-1190298.jpg&fm=jpg',
+    'https://media.istockphoto.com/id/501387734/pt/foto/dan%C3%A7ar-seus-amigos.jpg?s=612x612&w=0&k=20&c=aHB1gZ5Qm6Glsl0n4RGR4oI8r_nxe5QI06TYlw9ifdg=',
+  ];
 
   @override
   void initState() {
@@ -97,15 +103,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> carouselImages = [
-      'https://media.istockphoto.com/id/1279483477/pt/foto/we-are-going-to-party-as-if-theres-no-tomorrow.jpg?s=612x612&w=0&k=20&c=rmnD3Ag-NN3CcvxWy3I92ZY2sz5gA1vDwE0vJCvhscE=',
-      'https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg?cs=srgb&dl=pexels-wendywei-1190298.jpg&fm=jpg',
-      'https://media.istockphoto.com/id/501387734/pt/foto/dan%C3%A7ar-seus-amigos.jpg?s=612x612&w=0&k=20&c=aHB1gZ5Qm6Glsl0n4RGR4oI8r_nxe5QI06TYlw9ifdg=',
-    ];
-
     return Consumer<LocationNotifier>(
       builder: (context, locationNotifier, child) {
-        // Pegue a cidade da localização diretamente do LocationNotifier
         String? currentLocation = locationNotifier.currentCity;
 
         if (locationNotifier.isLoading) {
@@ -113,23 +112,20 @@ class _HomeScreenState extends State<HomeScreen> {
             body: Center(child: CircularProgressIndicator()),
           );
         }
-        print("current city: $currentLocation");
 
         List<Event> filteredEvents = events.where((event) {
           final eventLocation = event.localId;
 
-          // Separar o local em duas partes: antes e depois da vírgula
           final parts = eventLocation.split(',');
 
-          // Verificar se existe uma cidade depois da vírgula
           if (parts.length > 1) {
-            final eventCity = parts[1].trim(); // A cidade estará após a vírgula
+            final eventCity = parts[1].trim();
             print("oi $eventCity");
             return eventCity ==
-                currentLocation; // Comparar com a cidade desejada
+                currentLocation;
           }
 
-          return false; // Caso não tenha cidade, retornamos false
+          return false;
         }).toList();
 
         return Scaffold(
@@ -166,6 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
+          drawer: AppDrawer(),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
