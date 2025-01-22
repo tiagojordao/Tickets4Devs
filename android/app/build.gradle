@@ -1,0 +1,42 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    // O Flutter Gradle Plugin deve ser aplicado após o Android e o Kotlin Gradle plugins.
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+android {
+    namespace = "com.example.tickets4devs"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId = "com.example.tickets4devs"
+        minSdk = 21
+        targetSdk = 33
+        versionCode = 1
+        versionName = "1.0.1"
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.debug
+        }
+    }
+}
+
+// Aplica o plugin do Google Services após a configuração do Android
+apply plugin: 'com.google.gms.google-services'
+
+flutter {
+    source = "../.."
+}
